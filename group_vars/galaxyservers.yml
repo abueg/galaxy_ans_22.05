@@ -57,6 +57,7 @@ galaxy_config:
     file_path: /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_data/
     check_migrate_tools: false 
     object_store_store_by: uuid
+    tool_data_path: "{{ galaxy_mutable_data_dir }}/tool-data"
     id_secret: "{{ vault_id_secret }}"
     library_import_dir: /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/data_libraries/admin/
     user_library_import_dir: /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/data_libraries/user/
