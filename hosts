@@ -1,0 +1,2 @@
+[galaxyservers]
+vglgalaxy.rockefeller.edu ansible_connection=local ansible_user=vgl_galaxy

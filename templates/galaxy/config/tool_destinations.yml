@@ -1,0 +1,11 @@
+---
+tools:
+  cat1:
+    rules:
+      - rule_type: file_size
+        lower_bound: 16
+        upper_bound: Infinity
+        destination: vgl_1c
+      default_destination: local_dest
+default_destination: vgl_32c
+verbose: True

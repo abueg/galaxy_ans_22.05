@@ -1,0 +1,148 @@
+---
+# Python 3 support
+pip_virtualenv_command: /rugpfs/fs0/home/vgl_galaxy/miniconda3/bin/python3 -m virtualenv # usegalaxy_eu.certbot, usegalaxy_eu.tiaas2, galaxyproject.galaxy
+certbot_virtualenv_package_name: python3-virtualenv    # usegalaxy_eu.certbot
+pip_package: python3-pip                               # geerlingguy.pip
+
+# PostgreSQL
+postgresql_objects_users:
+  - name: galaxy
+postgresql_objects_databases:
+  - name: galaxy
+    owner: galaxy
+postgresql_objects_port: 5432
+postgresql_objects_login_host: vglgalaxy.rockefeller.edu
+postgresql_objects_login_user: vgl_galaxy
+
+# PostgreSQL Backups
+postgresql_backup_dir: /lustre/fs5/vgl/scratch/vgl_galaxy/data/backups
+postgresql_backup_local_dir: "{{ '~vgl_galaxy' | expanduser }}/scratch/backups"
+
+# golang
+golang_gopath: $HOME/miniconda3/bin/go
+
+# slurm
+# slurm_roles: ['controller', 'exec'] # which roles should the machine play? exec are executions hosts
+# slurm_nodes:
+# - name: vglgalaxy.rockefeller.edu # name of our host
+#   CPUs: 24                         # here you would need to figure out how many cores your machine has
+# slurm_config:
+#   SlurmdParameters: config_overrides # ignore errors if the host actually has cores != 2
+#   SelectType: select/cons_res
+#   SelectTypeParameters: CR_CPU_Memory # Allocate individual cores/memory instead of entire node
+
+
+# Galaxy
+galaxy_create_user: false
+galaxy_separate_privileges: false
+galaxu_become_users: {}
+galaxy_privsep_user: vgl_galaxy
+galaxy_manage_paths: true 
+galaxy_layout: root-dir
+galaxy_root: /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/
+galaxy_user: {name: vgl_galaxy, shell: /bin/bash}
+galaxy_commit_id: release_22.05
+galaxy_force_checkout: true
+# miniconda_prefix: "{{ galaxy_tool_dependency_dir }}/_conda/"
+# miniconda_version: 4.7.12
+# miniconda_manage_dependencies: true
+conda_auto_install: true
+tool_dependency_dir: " {{ galaxy_tool_dependency_dir }} "
+
+galaxy_config:
+  galaxy:
+    admin_users: admin@admin.org
+    brand: "giraffes 🦒"
+    database_connection: "postgresql://vgl_galaxy@localhost:5432/galaxy"
+    file_path: /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_data/
+    check_migrate_tools: false 
+    object_store_store_by: uuid
+    id_secret: "{{ vault_id_secret }}"
+    library_import_dir: /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/data_libraries/admin/
+    user_library_import_dir: /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/data_libraries/user/
+    job_config_file: "{{ galaxy_config_dir }}/job_conf.yml"
+    dependency_resolvers_config_file: "{{ galaxy_config_dir }}/dependency_resolvers_conf.xml"
+    containers_resolvers_config_file: "{{ galaxy_config_dir }}/container_resolvers_conf.xml"
+    job_resource_params_file: "{{ galaxy_config_dir }}/job_resource_params_conf.xml"
+    tool_destinations_config_file : "{{ galaxy_config_dir }}/tool_destinations.yml"
+    # SQL performance
+    database_engine_option_server_side_cursors: true
+    slow_query_log_threshold: 5
+    enable_per_request_sql_debugging: true
+    # File serving performance
+    # nginx_x_accel_redirect_base: /_x_accel_redirect
+    # Automation / ease of use / user-facing features
+    watch_job_rules: 'auto'
+    allow_path_paste: true
+    enable_quotas: true
+    allow_user_deletion: true
+    show_welcome_with_login: true
+    expose_user_name: true
+    expose_dataset_path: true
+    expose_potentially_sensitive_job_metrics: true
+    # NFS workarounds
+    retry_job_output_collection: 3
+    # Debugging
+    cleanup_job: onsuccess
+    allow_user_impersonation: true
+    # tool security
+    outputs_to_working_directory: true
+  gravity:
+    galaxy_root: "{{ galaxy_root }}/server"
+    app_server: gunicorn
+    gunicorn: 
+      # listening options
+      bind: vglgalaxy.rockefeller.edu:8080
+#      bind: "unix:{{ galaxy_mutable_config_dir }}/gunicorn.sock"
+      # performance options
+      workers: 2
+      # other options that will be passed to gunicorn
+      extra_args: '--forwarded-allow-ips="*"'
+      preload: true
+    celery:
+      concurrency: 2
+      loglevel: DEBUG
+    handlers:
+      handler:
+        processes: 3
+        pools:
+          - job-handler
+          - workflow-scheduler
+
+galaxy_config_templates:
+  - src: templates/galaxy/config/job_conf.yml.j2
+    dest: "{{ galaxy_config.galaxy.job_config_file }}"
+  - src: templates/galaxy/config/container_resolvers_conf.xml.j2
+    dest: "{{ galaxy_config.galaxy.containers_resolvers_config_file }}"
+  - src: templates/galaxy/config/dependency_resolvers_conf.xml
+    dest: "{{ galaxy_config.galaxy.dependency_resolvers_config_file }}"
+  - src: templates/galaxy/config/tool_destinations.yml
+    dest: "{{ galaxy_config.galaxy.tool_destinations_config_file }}"
+  - src: templates/galaxy/config/job_resource_params_conf.xml.j2
+    dest: "{{ galaxy_config.galaxy.job_resource_params_file }}"
+  # - src: templates/galaxy/config/builds.txt
+  #   dest: "{{ galaxy_config.galaxy.builds_file_path }}"
+  # - src: templates/galaxy/config/data_manager_conf.xml
+  #   dest: "{{ galaxy_config.galaxy.data_manager_config_file }}"
+  # - src: templates/galaxy/config/datatypes_conf.xml
+  #   dest: "{{ galaxy_config.galaxy.datatypes_config_file }}"
+  # - src: templates/galaxy/config/dependency_resolvers_conf.xml
+  #   dest: "{{ galaxy_config.galaxy.dependency_resolvers_config_file }}"
+  # - src: templates/galaxy/config/disposable_email_blocklist.conf
+  #   dest: "{{ galaxy_config.galaxy.blocklist_file }}"
+
+galaxy_dynamic_job_rules:
+- my_rules.py
+
+galaxy_job_metrics_plugins:
+- type: core
+- type: cpuinfo
+- type: meminfo
+- type: uname
+- type: env
+- type: cgroup
+- type: hostname
+
+# systemd
+galaxy_manage_systemd: false
+galaxy_systemd_env: [DRMAA_LIBRARY_PATH="ru-auth/local/home/vgl_galaxy/dev/slurm-drmaa/slurm-drmaa-1.1.3/lib/libdrmaa.so"]

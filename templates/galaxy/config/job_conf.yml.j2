@@ -1,0 +1,53 @@
+runners:
+  local_runner:
+    load: galaxy.jobs.runners.local:LocalJobRunner
+    workers: 4
+  slurm:
+    load: galaxy.jobs.runners.slurm:SlurmJobRunner
+
+execution:
+  default: vgl_32c
+  environments:
+    local_dest:
+      runner: local_runner
+    vgl_32c:
+      runner: slurm
+      singularity_enabled: false
+      native_specification: --partition=vgl --nodes=1 --cpus-per-task=32
+      env:
+      - name: LC_ALL
+        value: C
+    vgl_1c:
+      runner: slurm
+      singularity_enabled: false
+      native_specification: --partition=vgl --nodes=1 --cpus-per-task=1
+      env:
+      - name: LC_ALL
+        value: C
+    bigmem_64c:
+      runner: slurm
+      singularity_enabled: false
+      native_specification: --partition=vgl_bigmem --nodes=1
+      env:
+      - name: LC_ALL
+        value: C
+    dynamic_partition_cores:
+      runner: dynamic
+      function: dynamic_partition_cores
+    dtd: 
+      runner: dynamic
+      type: dtd
+    vgl:
+      runner: slurm
+      singularity_enabled: false
+      native_specification: --partition=vgl
+      env:
+      - name: LC_ALL
+        value: C
+
+resources:
+  default: default
+
+tools:
+- class: local # these special tools that aren't parameterized for remote execution - expression tools, upload, etc
+  execution: local_dest

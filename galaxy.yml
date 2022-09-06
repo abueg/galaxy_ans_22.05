@@ -1,0 +1,16 @@
+---
+- hosts: galaxyservers
+  vars_files:
+    - group_vars/secret.yml
+  pre_tasks:
+    - name: Install dependencies
+      package:
+        name: ['acl', 'bzip2', 'git', 'make', 'python3-psycopg2', 'tar', 'python-virtualenv']
+    - git:
+        repo: 'https://github.com/usegalaxy-eu/libraries-training-repo'
+        dest: /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/data_libraries
+  roles:
+    - natefoo.postgresql_objects
+    - geerlingguy.pip
+    - galaxyproject.galaxy
+    - uchida.miniconda
