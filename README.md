@@ -8,6 +8,7 @@ IP 129.85.14.10
 note: might at some point need to make symlink for `.cache` in $HOME
 
 steps:
+```
 1) install miniconda3 (for python3)
 2) install postgres (via pgenv)
 3) install ansible (via pip)
@@ -16,6 +17,7 @@ steps:
 5) install ephemeris (via virtualenv)
 5.5) install tools using ephemeris and an old tool list
 6) install gxadmin for monitoring (from github) 
+```
 
 ssh from local to vglgalaxy
 `ssh -l vgl_galaxy vglgalaxy`
