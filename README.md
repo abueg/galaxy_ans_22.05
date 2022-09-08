@@ -24,7 +24,7 @@ echo "vglgalaxy.rockefeller.edu:5432:vgl_galaxy" > ~/.pgpass
 
 export PGHOST="vglgalaxy.rockefeller.edu"
 export PGUSER="vgl_galaxy"
-export PGDATABASE=$PGDATA
+export PGDATABASE=galaxy
 ```
 
 ssh from local to vglgalaxy
