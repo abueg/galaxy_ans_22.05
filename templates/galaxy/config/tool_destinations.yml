@@ -7,5 +7,7 @@ tools:
         upper_bound: Infinity
         destination: vgl_1c
       default_destination: local_dest
+  hifiasm:
+    default_destination: dynamic_partition_cores
 default_destination: vgl_32c
 verbose: True

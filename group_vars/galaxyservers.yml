@@ -52,7 +52,7 @@ tool_dependency_dir: " {{ galaxy_tool_dependency_dir }} "
 galaxy_config:
   galaxy:
     admin_users: admin@admin.org
-    brand: "giraffes 🦒"
+    brand: "🧬 VGL"
     database_connection: "postgresql://vgl_galaxy@localhost:5432/galaxy"
     file_path: /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_data/
     check_migrate_tools: false 

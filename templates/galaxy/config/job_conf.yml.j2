@@ -41,6 +41,13 @@ execution:
       env:
       - name: LC_ALL
         value: C
+    bigmem:
+      runner: slurm
+      singularity_enabled: false
+      native_specification: --partition=vgl_bigmem
+      env:
+      - name: LC_ALL
+        value: C
 
 resources:
   default: default
