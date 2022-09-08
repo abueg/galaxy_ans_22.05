@@ -8,9 +8,14 @@ IP 129.85.14.10
 note: might at some point need to make symlink for `.cache` in $HOME
 
 steps:
-1) miniconda3 (for python3)
-2) ansible
-3) galaxy via ansible
+1) install miniconda3 (for python3)
+2) install postgres (via pgenv)
+3) install ansible (via pip)
+3.5) install DRMAA (so galaxy install can find the DRMAA files)
+4) install galaxy via ansible
+5) install ephemeris (via virtualenv)
+5.5) install tools using ephemeris and an old tool list
+6) install gxadmin for monitoring (from github) 
 
 ssh from local to vglgalaxy
 `ssh -l vgl_galaxy vglgalaxy`
