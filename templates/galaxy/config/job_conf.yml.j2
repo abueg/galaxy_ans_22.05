@@ -34,9 +34,6 @@ execution:
     dynamic_partition_cores:
       runner: dynamic
       function: dynamic_partition_cores
-    dtd: 
-      runner: dynamic
-      type: dtd
     vgl:
       runner: slurm
       singularity_enabled: false
@@ -47,7 +44,13 @@ execution:
 
 resources:
   default: default
+  groups:
+    default: []
+    dynamic_partition_cores: [partition,core]
 
 tools:
 - class: local # these special tools that aren't parameterized for remote execution - expression tools, upload, etc
   execution: local_dest
+- id: hifiasm
+  execution: dynamic_partition_cores
+  resources: dynamic_partition_cores
