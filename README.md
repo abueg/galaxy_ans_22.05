@@ -21,6 +21,10 @@ steps:
 curl -L https://github.com/galaxyproject/gxadmin/releases/latest/download/gxadmin > $STORE/programs/bin/gxdmin
 chmod +x $STORE/programs/bin/gxadmin
 echo "vglgalaxy.rockefeller.edu:5432:vgl_galaxy" > ~/.pgpass
+
+export PGHOST="vglgalaxy.rockefeller.edu"
+export PGUSER="vgl_galaxy"
+export PGDATABASE=$PGDATA
 ```
 
 ssh from local to vglgalaxy
