@@ -17,6 +17,11 @@ steps:
 7) install tools using ephemeris and an old tool list
 8) install gxadmin for monitoring (from github) 
 
+```
+curl -L https://github.com/galaxyproject/gxadmin/releases/latest/download/gxadmin > $STORE/programs/bin/gxdmin
+chmod +x $STORE/programs/bin/gxadmin
+```
+
 ssh from local to vglgalaxy
 `ssh -l vgl_galaxy vglgalaxy`
 
