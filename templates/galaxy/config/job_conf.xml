@@ -34,6 +34,7 @@
         <tool id="bwa_mem2" destination="dynamic_partition_cores" resources="partitioncores" />
         <tool id="yahs" destination="dynamic_partition_cores" resources="partitioncores" />
         <tool id="meryl" destination="dynamic_partition_cores" resources="partitioncores" />
+        <tool id="testing" destination="dynamic_partition_cores" resources="partitioncores" />
         <!-- 1 cpu tools -->
         <tool id="compress_file" destination="vgl_1cpu" />
         <tool id="genomescope" destination="vgl_1cpu" />
