@@ -6,7 +6,7 @@ runners:
     load: galaxy.jobs.runners.slurm:SlurmJobRunner
 
 execution:
-  default: vgl_32c
+  default: vgl_1c
   environments:
     local_dest:
       runner: local_runner
@@ -53,11 +53,11 @@ resources:
   default: default
   groups:
     default: []
-    dynamic_partition_cores: [partition,core]
+    dynamic_partition_cores: [partition,cores]
 
 tools:
-- class: local # these special tools that aren't parameterized for remote execution - expression tools, upload, etc
-  execution: local_dest
-- id: hifiasm
-  execution: dynamic_partition_cores
-  resources: dynamic_partition_cores
+  - class: local # these special tools that aren't parameterized for remote execution - expression tools, upload, etc
+    execution: local_dest
+  - id: testing
+    execution: dynamic_partition_cores
+    resources: dynamic_partition_cores

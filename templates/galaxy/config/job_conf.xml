@@ -1,4 +1,3 @@
-<?xml version="1.0"?>
 <job_conf>
     <plugins>
         <plugin id="local" type="runner" load="galaxy.jobs.runners.local:LocalJobRunner" workers="4"/>
@@ -24,10 +23,6 @@
             <param id="type">python</param>
             <param id="function">dynamic_partition_cores</param>
         </destination>
-        <destination id="bionano" runner="slurm">
-            <param id="nativeSpecification">--nodes=1 --ntasks=1 --cpus-per-task=32 --partition=vgl</param>
-            <env id="bionano_env" file="/lustre/fs5/vgl/scratch/labueg/galaxy_22.01/galaxy/tools/myTools/bionano/bionano_setup.sh" exec="conda activate bionano"/>
-        </destination>
     </destinations>
     <resources>
         <group id="testing">partition,cores</group>
@@ -37,13 +32,13 @@
         <tool id="bwa_mem" destination="dynamic_partition_cores" resources="testing" />
         <tool id="bwa_mem2" destination="dynamic_partition_cores" resources="testing" />
         <tool id="yahs" destination="dynamic_partition_cores" resources="testing" />
-        <tool id="bionano" destination="bionano" />
         <tool id="__DATA_FETCH__" destination="local" />
         <tool id="upload1" destination="local" />
         <tool id="compress_file" destination="vgl_1cpu" />
         <tool id="genomescope" destination="vgl_1cpu" />
         <tool id="compose_text_param" destination="vgl_1cpu" />
-	<tool id="cat1" destination="vgl_1cpu" />
+	    <tool id="cat1" destination="vgl_1cpu" />
+        <tool id="tp_cat" destination="vgl_1cpu" />
         <tool id="meryl" destination="dynamic_partition_cores" resources="testing" />
     </tools>
 </job_conf>
