@@ -139,4 +139,4 @@ galaxy_job_metrics_plugins:
 
 # systemd
 galaxy_manage_systemd: false
-galaxy_systemd_env: [DRMAA_LIBRARY_PATH="ru-auth/local/home/vgl_galaxy/dev/slurm-drmaa/slurm-drmaa-1.1.3/lib/libdrmaa.so"]
+galaxy_systemd_env: [DRMAA_LIBRARY_PATH="/ru-auth/local/home/vgl_galaxy/dev/slurm-drmaa/slurm-drmaa-1.1.3/lib/libdrmaa.so"]
