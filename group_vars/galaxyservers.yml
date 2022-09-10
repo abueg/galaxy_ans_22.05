@@ -113,7 +113,7 @@ galaxy_dynamic_job_rules:
 
 galaxy_local_tools:
 - testing.xml
-#- bionano.xml
+- bionano.xml
 
 galaxy_job_metrics_plugins:
 - type: core

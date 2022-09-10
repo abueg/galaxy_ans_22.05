@@ -23,6 +23,10 @@
             <param id="type">python</param>
             <param id="function">dynamic_partition_cores</param>
         </destination>
+        <destination id="bionano" runner="slurm">
+            <param id="nativeSpecification">--nodes=1 --ntasks=1 --cpus-per-task=32 --partition=vgl</param>
+            <env id="bionano_env" file="/lustre/fs5/vgl/store/vgl_galaxy/bionano/bionano_setup.sh"/>
+        </destination>
     </destinations>
     <resources>
         <group id="partitioncores">partition,cores</group>
@@ -44,5 +48,7 @@
         <!-- local tools -->
         <tool id="__DATA_FETCH__" destination="local" />
         <tool id="upload1" destination="local" />
+        <!-- bionano -->
+        <tool id="bionano" destination="bionano" />
     </tools>
 </job_conf>
