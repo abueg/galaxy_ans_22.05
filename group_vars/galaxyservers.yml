@@ -21,17 +21,6 @@ postgresql_backup_local_dir: "{{ '~vgl_galaxy' | expanduser }}/scratch/backups"
 # golang
 golang_gopath: $HOME/miniconda3/bin/go
 
-# slurm
-# slurm_roles: ['controller', 'exec'] # which roles should the machine play? exec are executions hosts
-# slurm_nodes:
-# - name: vglgalaxy.rockefeller.edu # name of our host
-#   CPUs: 24                         # here you would need to figure out how many cores your machine has
-# slurm_config:
-#   SlurmdParameters: config_overrides # ignore errors if the host actually has cores != 2
-#   SelectType: select/cons_res
-#   SelectTypeParameters: CR_CPU_Memory # Allocate individual cores/memory instead of entire node
-
-
 # Galaxy
 galaxy_create_user: false
 galaxy_separate_privileges: false
@@ -43,9 +32,6 @@ galaxy_root: /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/
 galaxy_user: {name: vgl_galaxy, shell: /bin/bash}
 galaxy_commit_id: release_22.05
 galaxy_force_checkout: true
-# miniconda_prefix: "{{ galaxy_tool_dependency_dir }}/_conda/"
-# miniconda_version: 4.7.12
-# miniconda_manage_dependencies: true
 conda_auto_install: true
 tool_dependency_dir: " {{ galaxy_tool_dependency_dir }} "
 
@@ -112,8 +98,6 @@ galaxy_config:
 galaxy_config_templates:
   - src: templates/galaxy/config/job_conf.xml
     dest: "{{ galaxy_config.galaxy.job_config_file }}"
-#  - src: templates/galaxy/config/container_resolvers_conf.xml.j2
-#    dest: "{{ galaxy_config.galaxy.containers_resolvers_config_file }}"
   - src: templates/galaxy/config/dependency_resolvers_conf.xml
     dest: "{{ galaxy_config.galaxy.dependency_resolvers_config_file }}"
   - src: templates/galaxy/config/tool_destinations.yml
