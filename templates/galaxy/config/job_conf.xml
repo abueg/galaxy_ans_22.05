@@ -29,17 +29,17 @@
     </resources>
     <tools>
         <!-- dynamic partition cores tools -->
-        <tool id="hifiasm" destination="dynamic_partition_cores" resources="partitioncores" />
+        <tool id="testing" destination="dynamic_partition_cores" resources="partitioncores" />
         <tool id="bwa_mem" destination="dynamic_partition_cores" resources="partitioncores" />
         <tool id="bwa_mem2" destination="dynamic_partition_cores" resources="partitioncores" />
-        <tool id="yahs" destination="dynamic_partition_cores" resources="partitioncores" />
+        <tool id="hifiasm" destination="dynamic_partition_cores" resources="partitioncores" />
         <tool id="meryl" destination="dynamic_partition_cores" resources="partitioncores" />
-        <tool id="testing" destination="dynamic_partition_cores" resources="partitioncores" />
+        <tool id="yahs" destination="dynamic_partition_cores" resources="partitioncores" />
         <!-- 1 cpu tools -->
+        <tool id="cat1" destination="vgl_1cpu" />
+        <tool id="compose_text_param" destination="vgl_1cpu" />
         <tool id="compress_file" destination="vgl_1cpu" />
         <tool id="genomescope" destination="vgl_1cpu" />
-        <tool id="compose_text_param" destination="vgl_1cpu" />
-	    <tool id="cat1" destination="vgl_1cpu" />
         <tool id="tp_cat" destination="vgl_1cpu" />
         <!-- local tools -->
         <tool id="__DATA_FETCH__" destination="local" />
