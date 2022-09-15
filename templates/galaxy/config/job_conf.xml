@@ -48,6 +48,7 @@
         <!-- local tools -->
         <tool id="__DATA_FETCH__" destination="local" />
         <tool id="upload1" destination="local" />
+        <tool id="fastq_paired_end_interlacer" destination="local" />
         <!-- bionano -->
         <tool id="bionano" destination="bionano" />
     </tools>

@@ -57,8 +57,8 @@
         -o ./
         #if $trim_cut_sites
             && export PATH=/opt/conda/bin/:\$PATH
-            && python '/lustre/fs5/vgl/store/vgl_galaxy/bionano/remove_fake_cut_sites.py' $output_file_NCBI 'SCAFFOLD_NCBI_trimmed.fasta' 'output.log'
-            && python '/lustre/fs5/vgl/store/vgl_galaxy/bionano/remove_fake_cut_sites.py' $output_file_not_scaffolded 'NOT_SCAFFOLDED_trimmed.fasta' 'output.log'
+            && /rugpfs/fs0/vgl/store/vglshare/tools/miniconda3/envs/bionano/bin/python '/lustre/fs5/vgl/store/vgl_galaxy/bionano/remove_fake_cut_sites.py' $output_file_NCBI 'SCAFFOLD_NCBI_trimmed.fasta' 'output.log'
+            && /rugpfs/fs0/vgl/store/vglshare/tools/miniconda3/envs/bionano/bin/python '/lustre/fs5/vgl/store/vgl_galaxy/bionano/remove_fake_cut_sites.py' $output_file_not_scaffolded 'NOT_SCAFFOLDED_trimmed.fasta' 'output.log'
         #end if 
     ]]>    </command>
     <configfiles>
