@@ -82,7 +82,7 @@ galaxy_config:
       bind: vglgalaxy.rockefeller.edu:8080
 #      bind: "unix:{{ galaxy_mutable_config_dir }}/gunicorn.sock"
       # performance options
-      workers: 2
+      workers: 6
       # other options that will be passed to gunicorn
       extra_args: '--forwarded-allow-ips="*"'
       preload: true
@@ -91,7 +91,7 @@ galaxy_config:
       loglevel: DEBUG
     handlers:
       handler:
-        processes: 5
+        processes: 4
         pools:
           - job-handler
           - workflow-scheduler
