@@ -69,9 +69,9 @@
                         <flag attr="version" val0="\$Id: hybridScaffold_DLE1_config.xml 7702 2018-06-25 20:53:51Z apang \$"/>
                     </version>
                     <global>
-                        <flag attr="maxmem" val0="__MEMORY__" display="Maximum memory (GB)" group="Global options" description="Define the maximum amount of RAM in gigabytes to be used by each process."/>
+                        <flag attr="maxmem" val0="256" display="Maximum memory (GB)" group="Global options" description="Define the maximum amount of RAM in gigabytes to be used by each process."/>
                         <flag attr="maxthreads" val0="__CORES__" display="Max threads" group="Global options" description="Define maximum number of threads to be used by each process."/>
-                        <flag attr="maxvirtmem" val0="__MEMORY__"/>
+                        <flag attr="maxvirtmem" val0="256"/>
                         <flag attr="RAmem" val0="3" val1="1"/>
                     </global>
                     <fasta2cmap>
