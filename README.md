@@ -1,13 +1,10 @@
 # vglgalaxy_scratchbook
-scribbles
-
-~~vglgalaxy machine should have postgresql as part of its build~~ will try local (as vgl_galaxy) postgres installation https://www.postgresql.org/about/news/install-a-local-non-root-postgresql-server-with-python-pip-2291/
 
 IP 129.85.14.10
 
 note: might at some point need to make symlink for `.cache` in $HOME
 
-steps:
+### steps:
 1) install miniconda3 (for python3)
 2) install postgres (via pgenv)
 3) install ansible (via pip)
@@ -30,7 +27,7 @@ export PGDATABASE=galaxy
 ssh from local to vglgalaxy
 `ssh -l vgl_galaxy vglgalaxy`
 
-0.1) set up aliases/envvars for my own sanity:
+### 0.1) set up aliases/envvars for my own sanity:
 ```
 export SCRATCH=/lustre/fs5/vgl/scratch/vgl_galaxy/
 export STORE=/lustre/fs5/vgl/store/vgl_galaxy/
@@ -42,7 +39,8 @@ export PS1="[\u@\h \w]\$ "
 (normally DRMAA_LIBRARY_PATH is also in my bashrc but maybe that will be different here idk `export DRMAA_LIBRARY_PATH=$STORE/programs/slurm-drmaa/slurm-drmaa-1.1.3/lib/libdrmaa.so`)
 
 
-1) set up miniconda3 (installs python3; needed for ansible), adapted from hpc guide: https://hpcguide.rockefeller.edu/guides/conda.html
+### 1) set up miniconda3 
+(installs python3; needed for ansible), adapted from hpc guide: https://hpcguide.rockefeller.edu/guides/conda.html
 first sets miniconda3 up in ~, then moves it to scratch, and makes symlink in ~
 ```
 cd $HOME
@@ -57,7 +55,62 @@ conda config --set auto_activate_base false
 exit
 ```
 
-2) install ansible (local)
+### 2) install postgreSQL 14.5 using pgenv
+installing it in $STORE because it is small. first we install 14.5 using `pgenv`, then we switch to it (switch = exporting its bins to path)
+```
+cd $STORE
+https://github.com/theory/pgenv.git
+cd pgenv
+./bin/pgenv build 14.5
+./bin/pgenv switch 14.5
+
+export PATH=/lustre/fs5/vgl/store/vgl_galaxy/pgenv/pgsql/bin:$PATH
+export PGDATA=/lustre/fs5/vgl/scratch/vgl_galaxy/pg_data
+# pg_data is where we will put the postgres data
+```
+starting up postgres
+```
+pg_ctl init
+pg_ctl -l /lustre/fs5/vgl/scratch/vgl_galaxy/pg_logs/logfile start
+
+pg_ctl start
+# to stop pg and let processes finish up
+pg_ctl stop -m smart
+
+# connect to pg, using database postgres (the one it comes with)
+psql -d postgres
+```
+edit the postgres config to listen for vglgalaxy.rockefeller.edu
+make your `$PGDATA/pg_hba.conf` look like this:
+```
+# TYPE  DATABASE        USER            ADDRESS                 METHOD
+
+# "local" is for Unix domain socket connections only
+local   all             all                                     trust
+# IPv4 local connections:
+host    all             all             127.0.0.1/32            trust
+host    all             all             129.85.14.10/32		trust
+# IPv6 local connections:
+host    all             all             ::1/128                 trust
+# Allow replication connections from localhost, by a user with the
+# replication privilege.
+local   replication     all                                     trust
+host    replication     all             127.0.0.1/32            trust
+host    replication     all             ::1/128                 trust
+```
+add this line to start of `$PGDATA/postgresql.conf`:
+```
+listen_addresses = 'localhost,129.85.14.10'
+```
+start up postgres
+```
+pg_ctl -l $SCRATCH/pg_logs/logfile start
+pg_ctl status
+pgsql -d postgres
+```
+
+
+### 3) install ansible (local)
 let's just use pip because it's here
 https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html
 ```
@@ -75,7 +128,7 @@ ansible [core 2.13.3]
   jinja version = 3.1.2
   libyaml = True
 ```
-
+### 4) install DRMAA
 
 
 # testing ansible galaxy install w/o miniconda3/postgresql roles
