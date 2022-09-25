@@ -81,6 +81,7 @@ pg_ctl stop -m smart
 psql -d postgres
 ```
 edit the postgres config to listen for vglgalaxy.rockefeller.edu
+
 make your `$PGDATA/pg_hba.conf` look like this:
 ```
 # TYPE  DATABASE        USER            ADDRESS                 METHOD
