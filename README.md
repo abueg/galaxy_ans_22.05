@@ -1,4 +1,4 @@
-# vglgalaxy_scratchbook
+# set up notes for VGL galaxy instance
 
 IP 129.85.14.10
 
@@ -149,4 +149,31 @@ export DRMAA_LIBRARY_PATH=$SLURM_DRMAA_ROOT/slurm-drmaa-1.1.3/lib/libdrmaa.so
         <plugin id="slurm" type="runner" load="galaxy.jobs.runners.slurm:SlurmJobRunner">
             <param id="drmaa_library_path">/ru-auth/local/home/vgl_galaxy/dev/slurm-drmaa/slurm-drmaa-1.1.3/lib/libdrmaa.so</param>
         </plugin>
-```   
+``` 
+
+### 5) install galaxy via ansible
+heavily referencing this GTN training: https://training.galaxyproject.org/training-material/topics/admin/tutorials/ansible-galaxy/tutorial.html
+
+but with variables set as in group_vars and andible.cfg. notably, we are **not using ansible to install postgresql or miniconda**.
+1) first download roles as specified in `requirements.yml`
+2) create `ansible.cfg` as appropriate
+3) then should be able to run the `galaxy.yml` playbook.
+
+```
+ansible-galaxy install -p roles -r requirements.yml
+ansible-playbook galaxy.yml
+```
+
+### 6) install ephemeris (via virtualenv)
+you might need to already have an admin account set up so that you can get the API key. more instructions in this training: https://training.galaxyproject.org/training-material/topics/admin/tutorials/tool-management/tutorial.html
+
+```
+virtualenv -p python3 ~/ephemeris_venv
+. ~/ephemeris_venv/bin/activate
+pip install ephemeris
+
+# how to get tool list from existing instance:
+get-tool-list -g "http://vglgalaxy.rockefeller.edu:8080" -o "vglgalaxy_tool_list_20220925.yml"`
+# install tool list into your running instance:
+shed-tools install -g https://your-galaxy -a <api-key> -t workflow_tools.yml
+```
