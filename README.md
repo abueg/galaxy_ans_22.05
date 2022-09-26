@@ -1,13 +1,10 @@
-# vglgalaxy_scratchbook
-scribbles
-
-~~vglgalaxy machine should have postgresql as part of its build~~ will try local (as vgl_galaxy) postgres installation https://www.postgresql.org/about/news/install-a-local-non-root-postgresql-server-with-python-pip-2291/
+# set up notes for VGL galaxy instance
 
 IP 129.85.14.10
 
 note: might at some point need to make symlink for `.cache` in $HOME
 
-steps:
+### steps:
 1) install miniconda3 (for python3)
 2) install postgres (via pgenv)
 3) install ansible (via pip)
@@ -30,7 +27,7 @@ export PGDATABASE=galaxy
 ssh from local to vglgalaxy
 `ssh -l vgl_galaxy vglgalaxy`
 
-0.1) set up aliases/envvars for my own sanity:
+### 0.1) set up aliases/envvars for my own sanity:
 ```
 export SCRATCH=/lustre/fs5/vgl/scratch/vgl_galaxy/
 export STORE=/lustre/fs5/vgl/store/vgl_galaxy/
@@ -42,7 +39,8 @@ export PS1="[\u@\h \w]\$ "
 (normally DRMAA_LIBRARY_PATH is also in my bashrc but maybe that will be different here idk `export DRMAA_LIBRARY_PATH=$STORE/programs/slurm-drmaa/slurm-drmaa-1.1.3/lib/libdrmaa.so`)
 
 
-1) set up miniconda3 (installs python3; needed for ansible), adapted from hpc guide: https://hpcguide.rockefeller.edu/guides/conda.html
+### 1) set up miniconda3 
+(installs python3; needed for ansible), adapted from hpc guide: https://hpcguide.rockefeller.edu/guides/conda.html
 first sets miniconda3 up in ~, then moves it to scratch, and makes symlink in ~
 ```
 cd $HOME
@@ -57,7 +55,63 @@ conda config --set auto_activate_base false
 exit
 ```
 
-2) install ansible (local)
+### 2) install postgreSQL 14.5 using pgenv
+installing it in $STORE because it is small. first we install 14.5 using `pgenv`, then we switch to it (switch = exporting its bins to path)
+```
+cd $STORE
+https://github.com/theory/pgenv.git
+cd pgenv
+./bin/pgenv build 14.5
+./bin/pgenv switch 14.5
+
+export PATH=/lustre/fs5/vgl/store/vgl_galaxy/pgenv/pgsql/bin:$PATH
+export PGDATA=/lustre/fs5/vgl/scratch/vgl_galaxy/pg_data
+# pg_data is where we will put the postgres data
+```
+starting up postgres
+```
+pg_ctl init
+pg_ctl -l /lustre/fs5/vgl/scratch/vgl_galaxy/pg_logs/logfile start
+
+pg_ctl start
+# to stop pg and let processes finish up
+pg_ctl stop -m smart
+
+# connect to pg, using database postgres (the one it comes with)
+psql -d postgres
+```
+edit the postgres config to listen for vglgalaxy.rockefeller.edu
+
+make your `$PGDATA/pg_hba.conf` look like this:
+```
+# TYPE  DATABASE        USER            ADDRESS                 METHOD
+
+# "local" is for Unix domain socket connections only
+local   all             all                                     trust
+# IPv4 local connections:
+host    all             all             127.0.0.1/32            trust
+host    all             all             129.85.14.10/32		trust
+# IPv6 local connections:
+host    all             all             ::1/128                 trust
+# Allow replication connections from localhost, by a user with the
+# replication privilege.
+local   replication     all                                     trust
+host    replication     all             127.0.0.1/32            trust
+host    replication     all             ::1/128                 trust
+```
+add this line to start of `$PGDATA/postgresql.conf`:
+```
+listen_addresses = 'localhost,129.85.14.10'
+```
+start up postgres
+```
+pg_ctl -l $SCRATCH/pg_logs/logfile start
+pg_ctl status
+pgsql -d postgres
+```
+
+
+### 3) install ansible (local)
 let's just use pip because it's here
 https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html
 ```
@@ -75,181 +129,51 @@ ansible [core 2.13.3]
   jinja version = 3.1.2
   libyaml = True
 ```
-
-
-
-# testing ansible galaxy install w/o miniconda3/postgresql roles
+### 4) install DRMAA
+this is the API galaxy uses to talk to SLURM (instructions lifted from Jason's HPC wiki entry, thank you!)
 ```
-[vgl_galaxy@vglgalaxy /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy]$ cat requirements.yml 
-- src: galaxyproject.galaxy
-  version: 0.9.16
-- src: galaxyproject.nginx
-  version: 0.7.0
-- src: geerlingguy.pip
-  version: 2.0.0
-- src: usegalaxy_eu.certbot
-  version: 0.1.5
-[vgl_galaxy@vglgalaxy /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy]$ ansible-galaxy install -p roles -r requirements.yml 
-Starting galaxy role install process
-- downloading role 'galaxy', owned by galaxyproject
-- downloading role from https://github.com/galaxyproject/ansible-galaxy/archive/0.9.16.tar.gz
-- extracting galaxyproject.galaxy to /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy/roles/galaxyproject.galaxy
-- galaxyproject.galaxy (0.9.16) was installed successfully
-- downloading role 'nginx', owned by galaxyproject
-- downloading role from https://github.com/galaxyproject/ansible-nginx/archive/0.7.0.tar.gz
-- extracting galaxyproject.nginx to /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy/roles/galaxyproject.nginx
-- galaxyproject.nginx (0.7.0) was installed successfully
-- downloading role 'pip', owned by geerlingguy
-- downloading role from https://github.com/geerlingguy/ansible-role-pip/archive/2.0.0.tar.gz
-- extracting geerlingguy.pip to /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy/roles/geerlingguy.pip
-- geerlingguy.pip (2.0.0) was installed successfully
-- downloading role 'certbot', owned by usegalaxy_eu
-- downloading role from https://github.com/usegalaxy-eu/ansible-certbot/archive/0.1.5.tar.gz
-- extracting usegalaxy_eu.certbot to /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy/roles/usegalaxy_eu.certbot
-- usegalaxy_eu.certbot (0.1.5) was installed successfully
+SLURM_DRMAA_ROOT=$HOME/dev/slurm-drmaa   # or wherever you want to install it
+mkdir -p $SLURM_DRMAA_ROOT/download
+mkdir -p $SLURM_DRMAA_ROOT/build
+cd $SLURM_DRMAA_ROOT/download
+wget https://github.com/natefoo/slurm-drmaa/releases/download/1.1.3/slurm-drmaa-1.1.3.tar.gz
+cd $SLURM_DRMAA_ROOT/build
+tar -zxf $SLURM_DRMAA_ROOT/download/slurm-drmaa-1.1.3.tar.gz
+cd $SLURM_DRMAA_ROOT/build/slurm-drmaa-1.1.3
+./configure --prefix=$SLURM_DRMAA_ROOT/slurm-drmaa-1.1.3
+make && make install
+export DRMAA_LIBRARY_PATH=$SLURM_DRMAA_ROOT/slurm-drmaa-1.1.3/lib/libdrmaa.so
 ```
+**NOTE FOR LATER**: eventually might need to add `galaxy_systemd_env: [DRMAA_LIBRARY_PATH="/ru-auth/local/home/vgl_galaxy/dev/slurm-drmaa/slurm-drmaa-1.1.3/lib/libdrmaa.so"]` to `group_vars/galaxy.yml` or add it to `templates/galaxy/config/job_conf.xml`:
+```        
+        <plugin id="slurm" type="runner" load="galaxy.jobs.runners.slurm:SlurmJobRunner">
+            <param id="drmaa_library_path">/ru-auth/local/home/vgl_galaxy/dev/slurm-drmaa/slurm-drmaa-1.1.3/lib/libdrmaa.so</param>
+        </plugin>
+``` 
+
+### 5) install galaxy via ansible
+heavily referencing this GTN training: https://training.galaxyproject.org/training-material/topics/admin/tutorials/ansible-galaxy/tutorial.html
+
+but with variables set as in group_vars and andible.cfg. notably, we are **not using ansible to install postgresql or miniconda**.
+1) first download roles as specified in `requirements.yml`
+2) create `ansible.cfg` as appropriate
+3) then should be able to run the `galaxy.yml` playbook.
 
 ```
-[vgl_galaxy@vglgalaxy /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy]$ cat ansible.cfg 
-[defaults]
-interpreter_python = /ru-auth/local/home/vgl_galaxy/miniconda3/bin/python3
-inventory = hosts
-retry_files_enabled = false
-
-[ssh_connection]
-pipelining = true
+ansible-galaxy install -p roles -r requirements.yml
+ansible-playbook galaxy.yml
 ```
 
-setting `ansible_connection=local` as we are running this playbook on the same machine
-```
-[vgl_galaxy@vglgalaxy /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy]$ cat hosts
-[galaxyservers]
-129.85.14.10 ansible_connection=local ansible_user=vgl_galaxy
-```
+### 6) install ephemeris (via virtualenv)
+you might need to already have an admin account set up so that you can get the API key. more instructions in this training: https://training.galaxyproject.org/training-material/topics/admin/tutorials/tool-management/tutorial.html
 
 ```
-[vgl_galaxy@vglgalaxy /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy]$ ansible-playbook galaxy.yml --check
+virtualenv -p python3 ~/ephemeris_venv
+. ~/ephemeris_venv/bin/activate
+pip install ephemeris
 
-PLAY [galaxyservers] *******************************************************************************************************************************************************
-
-TASK [Gathering Facts] *****************************************************************************************************************************************************
-ok: [129.85.14.10]
-
-TASK [Install Dependencies] ************************************************************************************************************************************************
-fatal: [129.85.14.10]: FAILED! => {"changed": false, "msg": "No package matching 'python3-psycopg2' found available, installed or updated", "rc": 126, "results": ["No package matching 'python3-psycopg2' found available, installed or updated"]}
-
-PLAY RECAP *****************************************************************************************************************************************************************
-129.85.14.10               : ok=1    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
-
-[vgl_galaxy@vglgalaxy /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy]$ vim requirements.yml 
-[vgl_galaxy@vglgalaxy /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy]$ ansible-galaxy install -p roles -r requirements.yml 
-Starting galaxy role install process
-- galaxyproject.galaxy (0.9.16) is already installed, skipping.
-- galaxyproject.nginx (0.7.0) is already installed, skipping.
-- geerlingguy.pip (2.0.0) is already installed, skipping.
-- downloading role 'miniconda', owned by uchida
-- downloading role from https://github.com/uchida/ansible-miniconda-role/archive/0.3.0.tar.gz
-- extracting uchida.miniconda to /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy/roles/uchida.miniconda
-- uchida.miniconda (0.3.0) was installed successfully
-- usegalaxy_eu.certbot (0.1.5) is already installed, skipping.
-[vgl_galaxy@vglgalaxy /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy]$ ansible-playbook galaxy.yml --check
-
-PLAY [galaxyservers] *******************************************************************************************************************************************************
-
-TASK [Gathering Facts] *****************************************************************************************************************************************************
-ok: [129.85.14.10]
-
-TASK [Install Dependencies] ************************************************************************************************************************************************
-fatal: [129.85.14.10]: FAILED! => {"changed": false, "msg": "No package matching 'python3-psycopg2' found available, installed or updated", "rc": 126, "results": ["No package matching 'python3-psycopg2' found available, installed or updated"]}
-
-PLAY RECAP *****************************************************************************************************************************************************************
-129.85.14.10               : ok=1    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0 
-```
-
-
-
-
-# playing around with local ansible -> remote host
-```
-brew install ansible
-
-ansible all --list-hosts -i /Users/linelle/Documents/_sandbox/_ansible/hosts 
-#  hosts (1):
-#    129.85.14.10
-
-ansible all -i hosts -m ping -u vgl_galaxy
-#129.85.14.10 | SUCCESS => {
-#    "ansible_facts": {
-#        "discovered_interpreter_python": "/usr/bin/python"
-#    },
-#    "changed": false,
-#    "ping": "pong"
-}
-```
-
-using an inventory
-
-```
-[linelle@blaziken ~/Documents/_sandbox/_ansible]$ ansible myhosts -m ping -i inventory.yaml
-vglgalaxy | SUCCESS => {
-    "ansible_facts": {
-        "discovered_interpreter_python": "/usr/bin/python"
-    },
-    "changed": false,
-    "ping": "pong"
-}
-[linelle@blaziken ~/Documents/_sandbox/_ansible]$ ansible-inventory -i inventory.yaml --list
-{
-    "_meta": {
-        "hostvars": {
-            "vglgalaxy": {
-                "ansible_host": "129.85.14.10",
-                "ansible_user": "vgl_galaxy"
-            }
-        }
-    },
-    "all": {
-        "children": [
-            "myhosts",
-            "ungrouped"
-        ]
-    },
-    "myhosts": {
-        "hosts": [
-            "vglgalaxy"
-        ]
-    }
-}
-```
-
-making a playbook
-
-```
-[linelle@blaziken ~/Documents/_sandbox/_ansible]$ ansible-playbook -i inventory.yaml playbook.yaml
-
-PLAY [My first play] *******************************************************************************************************************************************************
-
-TASK [Gathering Facts] *****************************************************************************************************************************************************
-ok: [vglgalaxy]
-
-TASK [Ping my hosts] *******************************************************************************************************************************************************
-ok: [vglgalaxy]
-
-TASK [Print message] *******************************************************************************************************************************************************
-ok: [vglgalaxy] => {
-    "msg": "Hello world"
-}
-
-PLAY RECAP *****************************************************************************************************************************************************************
-vglgalaxy                  : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
-
-[linelle@blaziken ~/Documents/_sandbox/_ansible]$ cat playbook.yaml 
-- name: My first play
-  hosts: myhosts
-  tasks:
-    - name: Ping my hosts
-      ansible.builtin.ping:
-    - name: Print message
-      ansible.builtin.debug:
-        msg: Hello world
+# how to get tool list from existing instance:
+get-tool-list -g "http://vglgalaxy.rockefeller.edu:8080" -o "vglgalaxy_tool_list_20220925.yml"`
+# install tool list into your running instance:
+shed-tools install -g https://your-galaxy -a <api-key> -t workflow_tools.yml
 ```
