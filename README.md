@@ -130,6 +130,26 @@ ansible [core 2.13.3]
   libyaml = True
 ```
 ### 4) install DRMAA
+this is the API galaxy uses to talk to SLURM (instructions lifted from Jason's HPC wiki entry, thank you!)
+```
+SLURM_DRMAA_ROOT=$HOME/dev/slurm-drmaa   # or wherever you want to install it
+mkdir -p $SLURM_DRMAA_ROOT/download
+mkdir -p $SLURM_DRMAA_ROOT/build
+cd $SLURM_DRMAA_ROOT/download
+wget https://github.com/natefoo/slurm-drmaa/releases/download/1.1.3/slurm-drmaa-1.1.3.tar.gz
+cd $SLURM_DRMAA_ROOT/build
+tar -zxf $SLURM_DRMAA_ROOT/download/slurm-drmaa-1.1.3.tar.gz
+cd $SLURM_DRMAA_ROOT/build/slurm-drmaa-1.1.3
+./configure --prefix=$SLURM_DRMAA_ROOT/slurm-drmaa-1.1.3
+make && make install
+export DRMAA_LIBRARY_PATH=$SLURM_DRMAA_ROOT/slurm-drmaa-1.1.3/lib/libdrmaa.so
+```
+**NOTE FOR LATER**: eventually might need to add `galaxy_systemd_env: [DRMAA_LIBRARY_PATH="/ru-auth/local/home/vgl_galaxy/dev/slurm-drmaa/slurm-drmaa-1.1.3/lib/libdrmaa.so"]` to `group_vars/galaxy.yml` or add it to `templates/galaxy/config/job_conf.xml`:
+```        
+        <plugin id="slurm" type="runner" load="galaxy.jobs.runners.slurm:SlurmJobRunner">
+            <param id="drmaa_library_path">/ru-auth/local/home/vgl_galaxy/dev/slurm-drmaa/slurm-drmaa-1.1.3/lib/libdrmaa.so</param>
+        </plugin>
+```   
 
 
 # testing ansible galaxy install w/o miniconda3/postgresql roles
