@@ -140,6 +140,7 @@ galaxy_config_templates:
 
 galaxy_dynamic_job_rules:
 - my_rules.py
+- vgl_only.py
 
 galaxy_local_tools:
 - testing.xml
