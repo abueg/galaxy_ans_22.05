@@ -14,7 +14,10 @@
             <param id="nativeSpecification">--nodes=1 --ntasks=1 --partition=vgl</param>
         </destination>
         <destination id="vgl_1cpu" runner="slurm">
-            <param id="nativeSpecification">--nodes=1 --ntasks=1 --cpus-per-task=1 --partition=vgl</param>
+            <param id="nativeSpecification">--ntasks=1 --cpus-per-task=1 --partition=vgl</param>
+        </destination>
+        <destination id="vgl_4cpu" runner="slurm">
+            <param id="nativeSpecification">--nodes=1 --ntasks=1 --cpus-per-task=4 --partition=vgl</param>
         </destination>
         <destination id="bigmem" runner="slurm">
             <param id="nativeSpecification">--nodes=1 --ntasks=1 --partition=vgl_bigmem</param>
@@ -43,6 +46,8 @@
         <tool id="hifiasm" destination="dynamic_partition_cores" resources="partitioncores" />
         <tool id="meryl" destination="dynamic_partition_cores" resources="partitioncores" />
         <tool id="yahs" destination="dynamic_partition_cores" resources="partitioncores" />
+        <!-- 4 cpu tools -->
+        <tool id="gfastats" destination="vgl_4cpu" />
         <!-- 1 cpu tools -->
         <tool id="cat1" destination="vgl_1cpu" />
         <tool id="compose_text_param" destination="vgl_1cpu" />
@@ -52,6 +57,8 @@
         <!-- local tools -->
         <tool id="__DATA_FETCH__" destination="local" />
         <tool id="upload1" destination="local" />
+        <tool id="compose_text_param" destination="local" />
+        <!-- vgl staff only tools -->
         <tool id="export_remote" destination="vgl_only" />
         <!-- bionano -->
         <tool id="bionano" destination="bionano" />
