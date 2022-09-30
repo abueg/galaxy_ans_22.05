@@ -57,7 +57,6 @@
         <!-- local tools -->
         <tool id="__DATA_FETCH__" destination="local" />
         <tool id="upload1" destination="local" />
-        <tool id="compose_text_param" destination="local" />
         <!-- vgl staff only tools -->
         <tool id="export_remote" destination="vgl_only" />
         <!-- bionano -->
