@@ -13,3 +13,4 @@
     - natefoo.postgresql_objects
     - geerlingguy.pip
     - galaxyproject.galaxy
+    - galaxyproject.nginx
