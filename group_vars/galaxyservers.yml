@@ -136,6 +136,8 @@ galaxy_config_templates:
     dest: "{{ galaxy_config.galaxy.job_resource_params_file }}"
   - src: templates/galaxy/config/file_sources_conf.yml
     dest: "{{ galaxy_config.galaxy.file_sources_config_file }}"
+  - src: templates/galaxy/config/welcome.html
+    dest: "{{ galaxy_config_dir }}"
 
 galaxy_dynamic_job_rules:
 - my_rules.py
@@ -158,33 +160,33 @@ galaxy_job_metrics_plugins:
 galaxy_manage_systemd: false
 galaxy_systemd_env: [DRMAA_LIBRARY_PATH="/ru-auth/local/home/vgl_galaxy/dev/slurm-drmaa/slurm-drmaa-1.1.3/lib/libdrmaa.so"]
 
-# NGINX
-nginx_command: /lustre/fs5/vgl/store/vgl_galaxy/nginx-1.18.0/sbin/nginx
-nginx_selinux_allow_local_connections: true
-nginx_servers:
-  - galaxy
-nginx_enable_default_server: false
-nginx_conf_http:
-  client_max_body_size: 1g
-  # gzip: "on" # This is enabled by default in Ubuntu, and the duplicate directive will cause a crash.
-  gzip_proxied: "any"
-  gzip_static: "on"   # The ngx_http_gzip_static_module module allows sending precompressed files with the ".gz" filename extension instead of regular files.
-  gzip_vary: "on"
-  gzip_min_length: 128
-  gzip_comp_level: 6  # Tradeoff of better compression for slightly more CPU time.
-  gzip_types: |
-      text/plain
-      text/css
-      text/xml
-      text/javascript
-      application/javascript
-      application/x-javascript
-      application/json
-      application/xml
-      application/xml+rss
-      application/xhtml+xml
-      application/x-font-ttf
-      application/x-font-opentype
-      image/png
-      image/svg+xml
-      image/x-icon
+# # NGINX
+# nginx_command: /lustre/fs5/vgl/store/vgl_galaxy/nginx-1.18.0/sbin/nginx
+# nginx_selinux_allow_local_connections: true
+# nginx_servers:
+#   - galaxy
+# nginx_enable_default_server: false
+# nginx_conf_http:
+#   client_max_body_size: 1g
+#   # gzip: "on" # This is enabled by default in Ubuntu, and the duplicate directive will cause a crash.
+#   gzip_proxied: "any"
+#   gzip_static: "on"   # The ngx_http_gzip_static_module module allows sending precompressed files with the ".gz" filename extension instead of regular files.
+#   gzip_vary: "on"
+#   gzip_min_length: 128
+#   gzip_comp_level: 6  # Tradeoff of better compression for slightly more CPU time.
+#   gzip_types: |
+#       text/plain
+#       text/css
+#       text/xml
+#       text/javascript
+#       application/javascript
+#       application/x-javascript
+#       application/json
+#       application/xml
+#       application/xml+rss
+#       application/xhtml+xml
+#       application/x-font-ttf
+#       application/x-font-opentype
+#       image/png
+#       image/svg+xml
+#       image/x-icon
