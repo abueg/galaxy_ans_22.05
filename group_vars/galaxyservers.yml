@@ -106,8 +106,8 @@ galaxy_config:
     offload-threads: 2
     static-map:
       - /static={{ galaxy_server_dir }}/static
-#      - /favicon.ico={{ galaxy_server_dir }}/static/favicon.ico
-      - /favicon.ico=/lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_ans_22.05/files/assets/favicon.ico
+      - /favicon.ico={{ galaxy_server_dir }}/static/favicon.ico
+#      - /favicon.ico=https://github.com/abueg/galaxy_ans_22.05/raw/master/files/assets/favicon.ico
     static-safe: client/galaxy/images
     master: true
     virtualenv: "{{ galaxy_venv_dir }}"
