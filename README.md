@@ -1,3 +1,4 @@
+test
 # set up notes for VGL galaxy instance
 
 IP 129.85.14.10
