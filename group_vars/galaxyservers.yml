@@ -139,6 +139,10 @@ galaxy_config_templates:
   - src: templates/galaxy/config/welcome.html
     dest: "{{ galaxy_server_dir }}/static/welcome.html"
 
+galaxy_config_files:
+  - src: files/galaxy/blastdb.loc
+    dest: "{{ galaxy_mutable_data_dir }}/tool-data/blastdb.loc"
+
 galaxy_dynamic_job_rules:
 - my_rules.py
 - vgl_only.py

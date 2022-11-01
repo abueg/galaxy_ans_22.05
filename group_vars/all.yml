@@ -1,0 +1,10 @@
+# CVMFS vars
+#cvmfs_role: client
+#galaxy_cvmfs_repos_enabled: config-repo
+#cvmfs_quota_limit: 500
+#cvmfs_keys:
+#- owner: vgl_galaxy
+#cvmfs_repositories:
+#- owner: vgl_galaxy
+#cvmfs_gc_user: vgl_galaxy
+#cvmfs_srv_mount: /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_ans_22.05/cvmfs_srv_mount

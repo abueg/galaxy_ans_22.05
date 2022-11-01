@@ -22,6 +22,9 @@
         <destination id="bigmem" runner="slurm">
             <param id="nativeSpecification">--nodes=1 --ntasks=1 --partition=vgl_bigmem</param>
         </destination>
+	<destination id="bigmem_64cpu" runner="slurm">
+	    <param id="nativeSpecification">--nodes=1 --ntasks=1 --cpus-per-task=64 --partition=vgl_bigmem</param>
+	</destination>
         <destination id="dynamic_partition_cores" runner="dynamic">
             <param id="type">python</param>
             <param id="function">dynamic_partition_cores</param>
@@ -46,6 +49,8 @@
         <tool id="hifiasm" destination="dynamic_partition_cores" resources="partitioncores" />
         <tool id="meryl" destination="dynamic_partition_cores" resources="partitioncores" />
         <tool id="yahs" destination="dynamic_partition_cores" resources="partitioncores" />
+	<!-- bigmem tools -->
+	<tool id="smudgeplot" destination="bigmem_64cpu" />
         <!-- 4 cpu tools -->
         <tool id="gfastats" destination="vgl_4cpu" />
         <!-- 1 cpu tools -->
