@@ -44,7 +44,6 @@
             <param id="nativeSpecification">--nodes=1 --ntasks=1 --cpus-per-task=16 --partition=vgl</param>
 	    <resubmit condition="any_failure" destination="bigmem_32cpu"/>
         </destination>
-	</destination>
 	<destination id="retry_to_bigmem64" runner="slurm">
             <param id="nativeSpecification">--nodes=1 --ntasks=1 --cpus-per-task=32 --partition=vgl</param>
 	    <resubmit condition="any_failure" destination="bigmem_64cpu"/>
@@ -58,10 +57,10 @@
         <tool id="testing" destination="dynamic_partition_cores" resources="partitioncores" />
         <tool id="bwa_mem" destination="dynamic_partition_cores" resources="partitioncores" />
         <tool id="meryl" destination="dynamic_partition_cores" resources="partitioncores" />
+	<tool id="yahs" destination="dynamic_partition_cores" resources="partitioncores" />
+	<tool id="bwa_mem2" destination="dynamic_partition_cores" resources="partitiioncores" />
 	<!-- retry tools -->
 	<tool id="hifiasm" destination="retry_to_bigmem64" />
-	<tool id="yahs" destination="retry_to_bigmem64" />
-	<tool id="bwa_mem2" destination="retry_to_bigmem32" />
 	<!-- bigmem tools -->
 	<tool id="smudgeplot" destination="bigmem_64cpu" />
         <!-- 4 cpu tools -->
