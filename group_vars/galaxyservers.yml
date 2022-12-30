@@ -146,6 +146,7 @@ galaxy_config_files:
 galaxy_dynamic_job_rules:
 - my_rules.py
 - vgl_only.py
+- resubmit_to_bigmem.py
 
 galaxy_local_tools:
 - testing.xml

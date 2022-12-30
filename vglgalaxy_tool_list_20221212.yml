@@ -1,0 +1,224 @@
+tools:
+- name: bwa
+  owner: devteam
+  revisions:
+  - 64f11cf59c6e
+  tool_panel_section_label: Map with BWA
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: meryl
+  owner: iuc
+  revisions:
+  - 29dabd8db6f2
+  tool_panel_section_label: Meryl
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: ncbi_blast_plus
+  owner: devteam
+  revisions:
+  - 0e3cf9594bb7
+  tool_panel_section_label: Tools from workflows
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: text_processing
+  owner: bgruening
+  revisions:
+  - ddf54b12c295
+  - f46f0e4f75c4
+  tool_panel_section_label: Tools from workflows
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: hifiasm
+  owner: bgruening
+  revisions:
+  - 5bec28269d95
+  tool_panel_section_label: Tools from workflows
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: merqury
+  owner: iuc
+  revisions:
+  - 39edec572bae
+  tool_panel_section_label: Tools from workflows
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: meryl
+  owner: iuc
+  revisions:
+  - eadfd71dde37
+  tool_panel_section_label: Tools from workflows
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: gfa_to_fa
+  owner: iuc
+  revisions:
+  - e33c82b63727
+  tool_panel_section_label: Tools from workflows
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: genomescope
+  owner: iuc
+  revisions:
+  - 3169a38c2656
+  tool_panel_section_label: Tools from workflows
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: cutadapt
+  owner: lparsons
+  revisions:
+  - 5915ea1ec9b1
+  tool_panel_section_label: Cutadapt
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: merqury
+  owner: iuc
+  revisions:
+  - f8113c25bc6b
+  tool_panel_section_label: Merqury
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: purge_dups
+  owner: iuc
+  revisions:
+  - a315c25dc813
+  tool_panel_section_label: Purge overlaps
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: minimap2
+  owner: iuc
+  revisions:
+  - 11a0d50a54e6
+  tool_panel_section_label: Map with minimap2
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: column_maker
+  owner: devteam
+  revisions:
+  - 02026300aa45
+  tool_panel_section_label: Compute
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: salsa
+  owner: iuc
+  revisions:
+  - 9a22227bb6d0
+  tool_panel_section_label: SALSA
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: pretext_snapshot
+  owner: iuc
+  revisions:
+  - 44c66e8d21e6
+  tool_panel_section_label: Pretext Snapshot
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: pretext_map
+  owner: iuc
+  revisions:
+  - 2b16ba799da9
+  tool_panel_section_label: PretextMap
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: bedtools
+  owner: iuc
+  revisions:
+  - 07e8b80f278c
+  tool_panel_section_label: bedtools Intersect intervals
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: busco
+  owner: iuc
+  revisions:
+  - 41030a6c03b7
+  tool_panel_section_label: Busco
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: quast
+  owner: iuc
+  revisions:
+  - 7594365c546b
+  tool_panel_section_label: Quast
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: bellerophon
+  owner: iuc
+  revisions:
+  - 25ca5d73aedf
+  tool_panel_section_label: Filter and merge
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: bwa_mem2
+  owner: iuc
+  revisions:
+  - b4a22d90cce9
+  tool_panel_section_label: BWA-MEM2
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: bionano_scaffold
+  owner: bgruening
+  revisions:
+  - 5258e18bbe23
+  tool_panel_section_label: Bionano Hybrid Scaffold
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: jellyfish
+  owner: iuc
+  revisions:
+  - b4038a4d48f5
+  tool_panel_section_label: jellyfish
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: compress_file
+  owner: iuc
+  revisions:
+  - 09ea79f9f260
+  tool_panel_section_label: Compress file(s)
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: xy_plot
+  owner: devteam
+  revisions:
+  - ecb437f1d298
+  tool_panel_section_label: Plotting tool
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: hifiasm
+  owner: bgruening
+  revisions:
+  - 5f625c63b8bc
+  tool_panel_section_label: Hifiasm
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: yahs
+  owner: iuc
+  revisions:
+  - fc925f53cae7
+  tool_panel_section_label: YAHS
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: gfastats
+  owner: bgruening
+  revisions:
+  - 690c2caa367e
+  tool_panel_section_label: gfastats
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: bandage
+  owner: iuc
+  revisions:
+  - ddddce450736
+  tool_panel_section_label: Bandage Info
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: bandage
+  owner: iuc
+  revisions:
+  - ddddce450736
+  tool_panel_section_label: Bandage Image
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: yahs
+  owner: iuc
+  revisions:
+  - 39495e107274
+  tool_panel_section_label: YAHS
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: mummer_mummerplot
+  owner: iuc
+  revisions:
+  - 4fc0cb2ac8ae
+  tool_panel_section_label: Mummerplot
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: mummer_nucmer
+  owner: iuc
+  revisions:
+  - e18267f90096
+  tool_panel_section_label: Nucmer
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: cutadapt
+  owner: lparsons
+  revisions:
+  - 135b80fb1ac2
+  tool_panel_section_label: Cutadapt
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: add_value
+  owner: devteam
+  revisions:
+  - 745871c0b055
+  tool_panel_section_label: Add column
+  tool_shed_url: toolshed.g2.bx.psu.edu
+- name: ggplot2_point
+  owner: iuc
+  revisions:
+  - 5fe1dc76176e
+  tool_panel_section_label: Scatterplot with ggplot2
+  tool_shed_url: toolshed.g2.bx.psu.edu

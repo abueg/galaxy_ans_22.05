@@ -22,12 +22,12 @@
         <destination id="bigmem" runner="slurm">
             <param id="nativeSpecification">--nodes=1 --ntasks=1 --partition=vgl_bigmem</param>
         </destination>
-	<destination id="bigmem_32cpu" runner="slurm">
-	    <param id="nativeSpecification">--nodes=1 --ntasks=1 --cpus-per-task=32 --partition=vgl_bigmem</param>
-	</destination>
-	<destination id="bigmem_64cpu" runner="slurm">
-	    <param id="nativeSpecification">--nodes=1 --ntasks=1 --cpus-per-task=64 --partition=vgl_bigmem</param>
-	</destination>
+        <destination id="bigmem_32cpu" runner="slurm">
+            <param id="nativeSpecification">--nodes=1 --ntasks=1 --cpus-per-task=32 --partition=vgl_bigmem</param>
+        </destination>
+        <destination id="bigmem_64cpu" runner="slurm">
+            <param id="nativeSpecification">--nodes=1 --ntasks=1 --cpus-per-task=64 --partition=vgl_bigmem</param>
+        </destination>
         <destination id="dynamic_partition_cores" runner="dynamic">
             <param id="type">python</param>
             <param id="function">dynamic_partition_cores</param>
@@ -40,14 +40,10 @@
             <param id="nativeSpecification">--nodes=1 --ntasks=1 --cpus-per-task=32 --partition=vgl</param>
             <env id="bionano_env" file="/lustre/fs5/vgl/store/vgl_galaxy/bionano/bionano_setup.sh"/>
         </destination>
-	<destination id="retry_to_bigmem32" runner="slurm">
-            <param id="nativeSpecification">--nodes=1 --ntasks=1 --cpus-per-task=16 --partition=vgl</param>
-	    <resubmit condition="any_failure" destination="bigmem_32cpu"/>
+        <destination id="select_then_retry_to_bigmem" runner="dynamic">
+            <param id="type">python</param>
+            <param id="function">resubmit_to_bigmem</param>
         </destination>
-	<destination id="retry_to_bigmem64" runner="slurm">
-            <param id="nativeSpecification">--nodes=1 --ntasks=1 --cpus-per-task=32 --partition=vgl</param>
-	    <resubmit condition="any_failure" destination="bigmem_64cpu"/>
-	</destination>
     </destinations>
     <resources>
         <group id="partitioncores">partition,cores</group>
@@ -57,12 +53,12 @@
         <tool id="testing" destination="dynamic_partition_cores" resources="partitioncores" />
         <tool id="bwa_mem" destination="dynamic_partition_cores" resources="partitioncores" />
         <tool id="meryl" destination="dynamic_partition_cores" resources="partitioncores" />
-	<tool id="yahs" destination="dynamic_partition_cores" resources="partitioncores" />
-	<tool id="bwa_mem2" destination="dynamic_partition_cores" resources="partitiioncores" />
-	<!-- retry tools -->
-	<tool id="hifiasm" destination="retry_to_bigmem64" />
-	<!-- bigmem tools -->
-	<tool id="smudgeplot" destination="bigmem_64cpu" />
+    	<tool id="yahs" destination="dynamic_partition_cores" resources="partitioncores" />
+    	<tool id="bwa_mem2" destination="dynamic_partition_cores" resources="partitioncores" />
+    	<!-- retry tools -->
+    	<tool id="hifiasm" destination="select_then_retry_to_bigmem" />
+    	<!-- bigmem tools -->
+    	<tool id="smudgeplot" destination="bigmem_64cpu" />
         <!-- 4 cpu tools -->
         <tool id="gfastats" destination="vgl_4cpu" />
         <!-- 1 cpu tools -->
