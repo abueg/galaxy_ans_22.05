@@ -144,7 +144,7 @@ galaxy_config_files:
     dest: "{{ galaxy_mutable_data_dir }}/tool-data/blastdb.loc"
 
 galaxy_dynamic_job_rules:
-- my_rules.py
+- dynamic_partition_cores.py
 - vgl_only.py
 - resubmit_to_bigmem.py
 

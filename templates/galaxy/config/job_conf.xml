@@ -40,10 +40,6 @@
             <param id="nativeSpecification">--nodes=1 --ntasks=1 --cpus-per-task=32 --partition=vgl</param>
             <env id="bionano_env" file="/lustre/fs5/vgl/store/vgl_galaxy/bionano/bionano_setup.sh"/>
         </destination>
-        <destination id="select_then_retry_to_bigmem" runner="dynamic">
-            <param id="type">python</param>
-            <param id="function">resubmit_to_bigmem</param>
-        </destination>
     </destinations>
     <resources>
         <group id="partitioncores">partition,cores</group>
@@ -56,7 +52,7 @@
     	<tool id="yahs" destination="dynamic_partition_cores" resources="partitioncores" />
     	<tool id="bwa_mem2" destination="dynamic_partition_cores" resources="partitioncores" />
     	<!-- retry tools -->
-    	<tool id="hifiasm" destination="select_then_retry_to_bigmem" />
+    	<tool id="hifiasm" destination="dynamic_partition_cores" resources="partitioncores" />
     	<!-- bigmem tools -->
     	<tool id="smudgeplot" destination="bigmem_64cpu" />
         <!-- 4 cpu tools -->

@@ -1,4 +1,5 @@
 import logging
+from galaxy.jobs import JobDestination
 from galaxy.jobs.mapper import JobMappingException
 
 log = logging.getLogger(__name__)
@@ -7,10 +8,11 @@ DESTINATION_IDS = {
     1 : 'vgl',
     2 : 'bigmem'
 }
-FAILURE_MESSAGE = 'This tool could not be run because of a misconfiguration in the Galaxy job running system, please report this error'
+FAILURE_MESSAGE = 'This tool could not be run because of a misconfiguration in the Galaxy job running system, please report this error (error from my_rules.py)'
 
 
 def dynamic_partition_cores(app, tool, job, user_email):
+    
     destination = None
     destination_id = 'vgl'
 
@@ -28,10 +30,9 @@ def dynamic_partition_cores(app, tool, job, user_email):
         cores = int(param_dict['__job_resource']['cores'])
         destination_id = DESTINATION_IDS[partition]
         destination = app.job_config.get_destination(destination_id)
-        # set walltime
 #        if 'nativeSpecification' not in destination.params:
 #            destination.params['nativeSpecification'] = ''
-#        destination.params['nativeSpecification'] += ' --partition=' + destination_id
+        destination.params['nativeSpecification'] += ' --partition=' + destination_id
         destination.params['nativeSpecification'] += ' --cpus-per-task=' + str(cores)
     except:
         # resource param selector not sent with tool form, job_conf.xml misconfigured
