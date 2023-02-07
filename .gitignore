@@ -1,3 +1,4 @@
 roles/
 .vault-password.txt
 templates/galaxy/config/file_sources_conf.yml
+.DS_Store
