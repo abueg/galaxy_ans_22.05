@@ -40,11 +40,11 @@
             <param id="nativeSpecification">--nodes=1 --ntasks=1 --cpus-per-task=32 --partition=vgl</param>
             <env id="bionano_env" file="/lustre/fs5/vgl/store/vgl_galaxy/bionano/bionano_setup.sh"/>
         </destination>
-        <destination id="hifiasm" runner="slurm">
+        <destination id="retry2bigmem64" runner="slurm">
             <param id="nativeSpecification">--nodes=1 --ntasks=1 --cpus-per-task=32 --partition=vgl</param>
             <resubmit condition="any_failure" destination="bigmem_64cpu" />
         </destination>
-        <destination id="bwamem2" runner="slurm">
+        <destination id="retry2bigmem32" runner="slurm">
             <param id="nativeSpecification">--nodes=1 --ntasks=1 --cpus-per-task=16 --partition=vgl</param>
             <resubmit condition="any_failure" destination="bigmem_32cpu" />
         </destination>
@@ -59,8 +59,9 @@
         <tool id="meryl" destination="dynamic_partition_cores" resources="partitioncores" />
     	<tool id="yahs" destination="dynamic_partition_cores" resources="partitioncores" />
     	<!-- retry tools -->
-        <tool id="bwa_mem2" destination="bwamem2" />
-    	<tool id="hifiasm" destination="hifiasm" />
+        <tool id="bwa_mem2" destination="retry2bigmem32" />
+    	<tool id="hifiasm" destination="retry2bigmem64" />
+	<tool id="purge_dups" destination="retry2bigmem64" />
     	<!-- bigmem tools -->
     	<tool id="smudgeplot" destination="bigmem_64cpu" />
         <!-- 4 cpu tools -->
