@@ -17,7 +17,10 @@
             <param id="nativeSpecification">--ntasks=1 --cpus-per-task=1 --partition=vgl</param>
         </destination>
         <destination id="vgl_4cpu" runner="slurm">
-            <param id="nativeSpecification">--nodes=1 --ntasks=1 --cpus-per-task=4 --partition=vgl</param>
+            <param id="nativeSpecification">--ntasks=1 --cpus-per-task=4 --partition=vgl</param>
+        </destination>
+        <destination id="vgl_16cpu" runner="slurm">
+            <param id="nativeSpecification">--ntasks=1 --cpus-per-task=16 --partition=vgl</param>
         </destination>
         <destination id="bigmem" runner="slurm">
             <param id="nativeSpecification">--nodes=1 --ntasks=1 --partition=vgl_bigmem</param>
@@ -56,12 +59,12 @@
         <!-- dynamic partition cores tools -->
         <tool id="testing" destination="dynamic_partition_cores" resources="partitioncores" />
         <tool id="bwa_mem" destination="dynamic_partition_cores" resources="partitioncores" />
-        <tool id="meryl" destination="dynamic_partition_cores" resources="partitioncores" />
-    	<tool id="yahs" destination="dynamic_partition_cores" resources="partitioncores" />
+        <tool id="meryl" destination="vgl_16cpu" />
     	<!-- retry tools -->
         <tool id="bwa_mem2" destination="retry2bigmem32" />
     	<tool id="hifiasm" destination="retry2bigmem64" />
-	<tool id="purge_dups" destination="retry2bigmem64" />
+    	<tool id="purge_dups" destination="retry2bigmem64" />
+        <tool id="yahs" destination="retry2bigmem64" />
     	<!-- bigmem tools -->
     	<tool id="smudgeplot" destination="bigmem_64cpu" />
         <!-- 4 cpu tools -->

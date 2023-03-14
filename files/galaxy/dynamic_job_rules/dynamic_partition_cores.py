@@ -14,13 +14,13 @@ FAILURE_MESSAGE = 'This tool could not be run because of a misconfiguration in t
 def dynamic_partition_cores(app, tool, job, user_email):
     
     destination = None
-    destination_id = 'vgl'
+    destination_id = 'vgl_default'
 
     # build the param dictionary
     param_dict = job.get_param_values(app)
 
     if param_dict.get('__job_resource', {}).get('__job_resource__select') != 'yes':
-        log.info("Job resource parameters not seleted, returning default destination")
+        log.info("Job resource parameters not selected, returning default destination")
         return destination_id
 
     # handle job resource parameters
