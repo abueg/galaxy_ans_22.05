@@ -51,6 +51,11 @@
             <param id="nativeSpecification">--nodes=1 --ntasks=1 --cpus-per-task=16 --partition=vgl</param>
             <resubmit condition="any_failure" destination="bigmem_32cpu" />
         </destination>
+        <destination id="singularity_local" runner="slurm">
+            <param id="singularity_enabled">true</param>
+            <param id="singularity_cmd">/usr/bin/apptainer</param>
+            <param id="nativeSpecification">--ntasks=1 --cpus-per-task=32 --partition=vgl</param>
+        </destination>
     </destinations>
     <resources>
         <group id="partitioncores">partition,cores</group>
@@ -65,6 +70,7 @@
     	<tool id="hifiasm" destination="retry2bigmem64" />
     	<tool id="purge_dups" destination="retry2bigmem64" />
         <tool id="yahs" destination="retry2bigmem64" />
+        <tool id="bellerophon" destination="retry2bigmem64" />
     	<!-- bigmem tools -->
     	<tool id="smudgeplot" destination="bigmem_64cpu" />
         <!-- 4 cpu tools -->
@@ -82,5 +88,6 @@
         <tool id="export_remote" destination="vgl_only" />
         <!-- bionano -->
         <tool id="bionano" destination="bionano" />
+        <tool id="mitohifi" destination="singularity_local" />
     </tools>
 </job_conf>
