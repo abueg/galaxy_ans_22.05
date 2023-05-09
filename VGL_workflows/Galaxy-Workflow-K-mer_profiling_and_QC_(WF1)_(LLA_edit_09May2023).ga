@@ -1,0 +1,602 @@
+{
+    "a_galaxy_workflow": "true",
+    "annotation": "added mitohifi module",
+    "creator": [
+        {
+            "class": "Organization",
+            "name": "VGP",
+            "url": "https://vertebrategenomeproject.org"
+        },
+        {
+            "class": "Organization",
+            "name": "Galaxy"
+        }
+    ],
+    "format-version": "0.1",
+    "license": "CC-BY-4.0",
+    "name": "K-mer profiling and QC (WF1) (LLA edit 09May2023)",
+    "report": {
+        "markdown": "\n# Workflow Execution Report\n\n```galaxy\ninvocation_time()\n```\n\n```galaxy\nhistory_dataset_display(output=\"GenomeScope on input dataset(s) Transformed log plot\")\n```\n\n```galaxy\nhistory_dataset_display(output=\"GenomeScope on input dataset(s) Log plot\")\n```\n\n```galaxy\nhistory_dataset_as_image(output=\"GenomeScope on input dataset(s) Linear plot\")\n```\n\n```galaxy\nhistory_dataset_as_image(output=\"GenomeScope on input dataset(s) Transformed linear plot\")\n```\n\n## Workflow Inputs\n```galaxy\ninvocation_inputs()\n```\n\n## Workflow Outputs\n```galaxy\ninvocation_outputs()\n```\n\n## Workflow\n```galaxy\nworkflow_display()\n```\n\n\n"
+    },
+    "steps": {
+        "0": {
+            "annotation": "",
+            "content_id": null,
+            "errors": null,
+            "id": 0,
+            "input_connections": {},
+            "inputs": [
+                {
+                    "description": "",
+                    "name": "Collection of Pacbio Data"
+                }
+            ],
+            "label": "Collection of Pacbio Data",
+            "name": "Input dataset collection",
+            "outputs": [],
+            "position": {
+                "left": 137.43923950195312,
+                "top": 0.0
+            },
+            "tool_id": null,
+            "tool_state": "{\"optional\": false, \"tag\": \"\", \"collection_type\": \"list\"}",
+            "tool_version": null,
+            "type": "data_collection_input",
+            "uuid": "861c3a49-1055-4030-9a91-e53cbf1ac436",
+            "workflow_outputs": []
+        },
+        "1": {
+            "annotation": "",
+            "content_id": null,
+            "errors": null,
+            "id": 1,
+            "input_connections": {},
+            "inputs": [
+                {
+                    "description": "",
+                    "name": "K-mer length "
+                }
+            ],
+            "label": "K-mer length ",
+            "name": "Input parameter",
+            "outputs": [],
+            "position": {
+                "left": 112.34375,
+                "top": 290.03474044799805
+            },
+            "tool_id": null,
+            "tool_state": "{\"default\": 21, \"parameter_type\": \"integer\", \"optional\": true}",
+            "tool_version": null,
+            "type": "parameter_input",
+            "uuid": "946bcadd-8ab0-4595-9985-abb574539844",
+            "workflow_outputs": []
+        },
+        "2": {
+            "annotation": "",
+            "content_id": null,
+            "errors": null,
+            "id": 2,
+            "input_connections": {},
+            "inputs": [
+                {
+                    "description": "",
+                    "name": "Ploidy"
+                }
+            ],
+            "label": "Ploidy",
+            "name": "Input parameter",
+            "outputs": [],
+            "position": {
+                "left": 128.7413330078125,
+                "top": 494.0191307067871
+            },
+            "tool_id": null,
+            "tool_state": "{\"default\": 2, \"parameter_type\": \"integer\", \"optional\": true}",
+            "tool_version": null,
+            "type": "parameter_input",
+            "uuid": "e3848560-55a2-42a5-ac1a-487ccf084d92",
+            "workflow_outputs": []
+        },
+        "3": {
+            "annotation": "",
+            "content_id": null,
+            "errors": null,
+            "id": 3,
+            "input_connections": {},
+            "inputs": [
+                {
+                    "description": "",
+                    "name": "species name (latin name)"
+                }
+            ],
+            "label": "species name (latin name)",
+            "name": "Input parameter",
+            "outputs": [],
+            "position": {
+                "left": 0.0,
+                "top": 681.8055992126465
+            },
+            "tool_id": null,
+            "tool_state": "{\"parameter_type\": \"text\", \"optional\": false}",
+            "tool_version": null,
+            "type": "parameter_input",
+            "uuid": "536bcb58-404c-445c-ba80-d6b35d795ba9",
+            "workflow_outputs": []
+        },
+        "4": {
+            "annotation": "",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/iuc/meryl/meryl/1.3+galaxy6",
+            "errors": null,
+            "id": 4,
+            "input_connections": {
+                "operation_type|input_reads": {
+                    "id": 0,
+                    "output_name": "output"
+                },
+                "operation_type|options_kmer_size|input_kmer_size": {
+                    "id": 1,
+                    "output_name": "output"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "Meryl",
+            "outputs": [
+                {
+                    "name": "read_db",
+                    "type": "meryldb"
+                }
+            ],
+            "position": {
+                "left": 438.40277099609375,
+                "top": 0.9895858764648438
+            },
+            "post_job_actions": {
+                "HideDatasetActionread_db": {
+                    "action_arguments": {},
+                    "action_type": "HideDatasetAction",
+                    "output_name": "read_db"
+                }
+            },
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/meryl/meryl/1.3+galaxy6",
+            "tool_shed_repository": {
+                "changeset_revision": "29dabd8db6f2",
+                "name": "meryl",
+                "owner": "iuc",
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            },
+            "tool_state": "{\"operation_type\": {\"command_type\": \"count-kmers\", \"__current_case__\": 0, \"count_operations\": \"count\", \"input_reads\": {\"__class__\": \"ConnectedValue\"}, \"options_kmer_size\": {\"kmer_size\": \"provide\", \"__current_case__\": 0, \"input_kmer_size\": {\"__class__\": \"ConnectedValue\"}}}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "1.3+galaxy6",
+            "type": "tool",
+            "uuid": "9f3718fe-c33a-43c1-b36e-964a929678f7",
+            "workflow_outputs": []
+        },
+        "5": {
+            "annotation": "",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/bgruening/mitohifi/mitohifi/3+galaxy0",
+            "errors": null,
+            "id": 5,
+            "input_connections": {
+                "operation_mode|species": {
+                    "id": 3,
+                    "output_name": "output"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "MitoHiFi",
+            "outputs": [
+                {
+                    "name": "fasta_reference",
+                    "type": "fasta"
+                },
+                {
+                    "name": "genbank_reference",
+                    "type": "genbank"
+                }
+            ],
+            "position": {
+                "left": 330.234375,
+                "top": 702.500057220459
+            },
+            "post_job_actions": {
+                "HideDatasetActiongenbank_reference": {
+                    "action_arguments": {},
+                    "action_type": "HideDatasetAction",
+                    "output_name": "genbank_reference"
+                }
+            },
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/bgruening/mitohifi/mitohifi/3+galaxy0",
+            "tool_shed_repository": {
+                "changeset_revision": "99ddbf037d98",
+                "name": "mitohifi",
+                "owner": "bgruening",
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            },
+            "tool_state": "{\"operation_mode\": {\"command\": \"find_reference\", \"__current_case__\": 0, \"species\": {\"__class__\": \"ConnectedValue\"}, \"email\": \"labueg@rockefeller.edu\", \"min_length\": \"16000\", \"exact_species\": \"false\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "3+galaxy0",
+            "type": "tool",
+            "uuid": "a0db6279-b653-49c4-8b78-cb77a71be354",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "fasta_reference",
+                    "uuid": "e7a1f4c9-0989-4c73-a7c4-74aa90808e70"
+                }
+            ]
+        },
+        "6": {
+            "annotation": "",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/iuc/meryl/meryl/1.3+galaxy6",
+            "errors": null,
+            "id": 6,
+            "input_connections": {
+                "operation_type|input_meryldb_02": {
+                    "id": 4,
+                    "output_name": "read_db"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "Meryl",
+            "outputs": [
+                {
+                    "name": "read_db",
+                    "type": "meryldb"
+                }
+            ],
+            "position": {
+                "left": 707.1875610351562,
+                "top": 127.85590744018555
+            },
+            "post_job_actions": {
+                "TagDatasetActionread_db": {
+                    "action_arguments": {
+                        "tags": "meryl_db"
+                    },
+                    "action_type": "TagDatasetAction",
+                    "output_name": "read_db"
+                }
+            },
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/meryl/meryl/1.3+galaxy6",
+            "tool_shed_repository": {
+                "changeset_revision": "29dabd8db6f2",
+                "name": "meryl",
+                "owner": "iuc",
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            },
+            "tool_state": "{\"operation_type\": {\"command_type\": \"groups-kmers\", \"__current_case__\": 3, \"groups_operations\": \"union-sum\", \"input_meryldb_02\": {\"__class__\": \"ConnectedValue\"}}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "1.3+galaxy6",
+            "type": "tool",
+            "uuid": "6467a6da-23e0-4ee0-af0e-7f5fc8a636de",
+            "workflow_outputs": [
+                {
+                    "label": "Merged Meryl Database",
+                    "output_name": "read_db",
+                    "uuid": "fb2e8cfc-d897-4eec-b545-8409761f0b77"
+                }
+            ]
+        },
+        "7": {
+            "annotation": "",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/bgruening/mitohifi/mitohifi/3+galaxy0",
+            "errors": null,
+            "id": 7,
+            "input_connections": {
+                "operation_mode|input_option|input_reads": {
+                    "id": 0,
+                    "output_name": "output"
+                },
+                "operation_mode|reference_fasta": {
+                    "id": 5,
+                    "output_name": "fasta_reference"
+                },
+                "operation_mode|reference_genbank": {
+                    "id": 5,
+                    "output_name": "genbank_reference"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "MitoHiFi",
+            "outputs": [
+                {
+                    "name": "mitogenome_fasta",
+                    "type": "fasta"
+                },
+                {
+                    "name": "mitogenome_genbank",
+                    "type": "genbank"
+                },
+                {
+                    "name": "mitogenome_annotation",
+                    "type": "png"
+                },
+                {
+                    "name": "mitogenome_coverage",
+                    "type": "png"
+                },
+                {
+                    "name": "contigs_stats",
+                    "type": "tsv"
+                },
+                {
+                    "name": "hifiasm",
+                    "type": "fasta"
+                },
+                {
+                    "name": "hifiasm_filtered",
+                    "type": "fasta"
+                },
+                {
+                    "name": "hifiasm_contigs",
+                    "type": "fasta"
+                }
+            ],
+            "position": {
+                "left": 765.8507690429688,
+                "top": 613.454891204834
+            },
+            "post_job_actions": {
+                "HideDatasetActionhifiasm": {
+                    "action_arguments": {},
+                    "action_type": "HideDatasetAction",
+                    "output_name": "hifiasm"
+                },
+                "HideDatasetActionhifiasm_contigs": {
+                    "action_arguments": {},
+                    "action_type": "HideDatasetAction",
+                    "output_name": "hifiasm_contigs"
+                },
+                "HideDatasetActionhifiasm_filtered": {
+                    "action_arguments": {},
+                    "action_type": "HideDatasetAction",
+                    "output_name": "hifiasm_filtered"
+                }
+            },
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/bgruening/mitohifi/mitohifi/3+galaxy0",
+            "tool_shed_repository": {
+                "changeset_revision": "99ddbf037d98",
+                "name": "mitohifi",
+                "owner": "bgruening",
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            },
+            "tool_state": "{\"operation_mode\": {\"command\": \"mitohifi\", \"__current_case__\": 1, \"input_option\": {\"input\": \"pacbio\", \"__current_case__\": 0, \"input_reads\": {\"__class__\": \"ConnectedValue\"}, \"bloom_filter\": \"0\"}, \"reference_fasta\": {\"__class__\": \"ConnectedValue\"}, \"reference_genbank\": {\"__class__\": \"ConnectedValue\"}, \"genetic_code\": \"2\", \"advanced_options\": {\"query_blast\": \"70\", \"circular_size\": null, \"circular_offset\": null, \"outputs\": null}, \"output_zip\": \"false\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "3+galaxy0",
+            "type": "tool",
+            "uuid": "4b4af932-fa88-4150-bf2e-a89800f0e26b",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "mitogenome_fasta",
+                    "uuid": "cfb14251-b97f-424f-9e06-6d98bff3e036"
+                },
+                {
+                    "label": null,
+                    "output_name": "mitogenome_genbank",
+                    "uuid": "94276850-1202-458e-b5f2-1fe13f2c6385"
+                },
+                {
+                    "label": null,
+                    "output_name": "mitogenome_annotation",
+                    "uuid": "b0d16636-6a3f-458c-b1ea-d47cbebed60b"
+                },
+                {
+                    "label": null,
+                    "output_name": "mitogenome_coverage",
+                    "uuid": "bb449434-b164-4f84-a074-ddea6921a502"
+                },
+                {
+                    "label": null,
+                    "output_name": "contigs_stats",
+                    "uuid": "d7b9462c-6d49-4458-b932-9844a4e1e4ee"
+                }
+            ]
+        },
+        "8": {
+            "annotation": "",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/iuc/meryl/meryl/1.3+galaxy6",
+            "errors": null,
+            "id": 8,
+            "input_connections": {
+                "operation_type|input_meryldb_02": {
+                    "id": 6,
+                    "output_name": "read_db"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "Meryl",
+            "outputs": [
+                {
+                    "name": "read_db_hist",
+                    "type": "tabular"
+                }
+            ],
+            "position": {
+                "left": 996.8229370117188,
+                "top": 76.9357681274414
+            },
+            "post_job_actions": {
+                "HideDatasetActionread_db_hist": {
+                    "action_arguments": {},
+                    "action_type": "HideDatasetAction",
+                    "output_name": "read_db_hist"
+                }
+            },
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/meryl/meryl/1.3+galaxy6",
+            "tool_shed_repository": {
+                "changeset_revision": "29dabd8db6f2",
+                "name": "meryl",
+                "owner": "iuc",
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            },
+            "tool_state": "{\"operation_type\": {\"command_type\": \"histogram-kmers\", \"__current_case__\": 4, \"input_meryldb_02\": {\"__class__\": \"ConnectedValue\"}}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "1.3+galaxy6",
+            "type": "tool",
+            "uuid": "10eb771d-1437-4602-91b7-e7e6d806dc2e",
+            "workflow_outputs": []
+        },
+        "9": {
+            "annotation": "",
+            "content_id": "toolshed.g2.bx.psu.edu/repos/iuc/genomescope/genomescope/2.0+galaxy1",
+            "errors": null,
+            "id": 9,
+            "input_connections": {
+                "input": {
+                    "id": 8,
+                    "output_name": "read_db_hist"
+                },
+                "kmer_length": {
+                    "id": 1,
+                    "output_name": "output"
+                },
+                "ploidy": {
+                    "id": 2,
+                    "output_name": "output"
+                }
+            },
+            "inputs": [],
+            "label": null,
+            "name": "GenomeScope",
+            "outputs": [
+                {
+                    "name": "linear_plot",
+                    "type": "png"
+                },
+                {
+                    "name": "log_plot",
+                    "type": "png"
+                },
+                {
+                    "name": "transformed_linear_plot",
+                    "type": "png"
+                },
+                {
+                    "name": "transformed_log_plot",
+                    "type": "png"
+                },
+                {
+                    "name": "model",
+                    "type": "txt"
+                },
+                {
+                    "name": "summary",
+                    "type": "txt"
+                },
+                {
+                    "name": "model_params",
+                    "type": "tabular"
+                }
+            ],
+            "position": {
+                "left": 1284.5399780273438,
+                "top": 96.90972900390625
+            },
+            "post_job_actions": {
+                "TagDatasetActionlinear_plot": {
+                    "action_arguments": {
+                        "tags": "genomescope_linear"
+                    },
+                    "action_type": "TagDatasetAction",
+                    "output_name": "linear_plot"
+                },
+                "TagDatasetActionlog_plot": {
+                    "action_arguments": {
+                        "tags": "genomescope_log"
+                    },
+                    "action_type": "TagDatasetAction",
+                    "output_name": "log_plot"
+                },
+                "TagDatasetActionmodel": {
+                    "action_arguments": {
+                        "tags": "genomescope_model"
+                    },
+                    "action_type": "TagDatasetAction",
+                    "output_name": "model"
+                },
+                "TagDatasetActionmodel_params": {
+                    "action_arguments": {
+                        "tags": "genomescope_params"
+                    },
+                    "action_type": "TagDatasetAction",
+                    "output_name": "model_params"
+                },
+                "TagDatasetActionsummary": {
+                    "action_arguments": {
+                        "tags": "genomescope_summ"
+                    },
+                    "action_type": "TagDatasetAction",
+                    "output_name": "summary"
+                },
+                "TagDatasetActiontransformed_linear_plot": {
+                    "action_arguments": {
+                        "tags": "genomescope_tr_linear"
+                    },
+                    "action_type": "TagDatasetAction",
+                    "output_name": "transformed_linear_plot"
+                },
+                "TagDatasetActiontransformed_log_plot": {
+                    "action_arguments": {
+                        "tags": "genomescope_tr_log"
+                    },
+                    "action_type": "TagDatasetAction",
+                    "output_name": "transformed_log_plot"
+                }
+            },
+            "tool_id": "toolshed.g2.bx.psu.edu/repos/iuc/genomescope/genomescope/2.0+galaxy1",
+            "tool_shed_repository": {
+                "changeset_revision": "3169a38c2656",
+                "name": "genomescope",
+                "owner": "iuc",
+                "tool_shed": "toolshed.g2.bx.psu.edu"
+            },
+            "tool_state": "{\"advanced_options\": {\"topology\": null, \"initial_repetitiveness\": null, \"initial_heterozygosities\": \"\", \"transform_exp\": null, \"testing\": \"true\", \"true_params\": \"\", \"trace_flag\": \"false\", \"num_rounds\": null}, \"input\": {\"__class__\": \"ConnectedValue\"}, \"kmer_length\": {\"__class__\": \"ConnectedValue\"}, \"lambda\": null, \"max_kmercov\": null, \"output_options\": {\"output_files\": [\"model_output\", \"summary_output\"], \"no_unique_sequence\": \"false\"}, \"ploidy\": {\"__class__\": \"ConnectedValue\"}, \"__page__\": null, \"__rerun_remap_job_id__\": null}",
+            "tool_version": "2.0+galaxy1",
+            "type": "tool",
+            "uuid": "955de351-ef19-42dc-89d7-ca213994515a",
+            "workflow_outputs": [
+                {
+                    "label": null,
+                    "output_name": "model_params",
+                    "uuid": "4a0479bc-fa4a-410b-bf01-9ab2ca2c2e79"
+                },
+                {
+                    "label": null,
+                    "output_name": "summary",
+                    "uuid": "d01b46f7-7aeb-4232-9d61-51489783db1c"
+                },
+                {
+                    "label": null,
+                    "output_name": "model",
+                    "uuid": "e9a1c7ad-f2c3-4bd8-8e29-15beace706d4"
+                },
+                {
+                    "label": "GenomeScope on input dataset(s) Transformed linear plot",
+                    "output_name": "transformed_linear_plot",
+                    "uuid": "0580d085-7eb9-4fba-9706-9c40eafd2318"
+                },
+                {
+                    "label": "GenomeScope on input dataset(s) Linear plot",
+                    "output_name": "linear_plot",
+                    "uuid": "010fec04-7054-4b9f-87f9-4401f7e7e8c8"
+                },
+                {
+                    "label": "GenomeScope on input dataset(s) Log plot",
+                    "output_name": "log_plot",
+                    "uuid": "593977b8-4f64-44bd-99f6-623f476651f2"
+                },
+                {
+                    "label": "GenomeScope on input dataset(s) Transformed log plot",
+                    "output_name": "transformed_log_plot",
+                    "uuid": "92390b3f-e09c-4094-a3c9-ec999c46db47"
+                }
+            ]
+        }
+    },
+    "tags": [
+        "vgl"
+    ],
+    "uuid": "8f167820-45f2-4925-bb63-b39f41d7f21c",
+    "version": 4
+}
