@@ -219,7 +219,7 @@ cd nginx-1.26.1
 ```
 
 
-```
+
 add to end of `galaxyservers.yml`:
 ```
 # NGINX
