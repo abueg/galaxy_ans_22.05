@@ -184,83 +184,41 @@ shed-tools install -g https://your-galaxy -a <api-key> -t workflow_tools.yml
 # nginx prerequisites
 reference: https://docs.nginx.com/nginx/admin-guide/installing-nginx/installing-nginx-open-source/#sources
 
-PCRE: seems to be older unmaintained pcre 8.44 (not pcre2)
+july 2024 edit: installed a new nginx pointing to the src files instead of the libraries, maybe work? i can get it to serve an `index.html` so idk. not sure if i need to run `make install` in the src folders if nginx is going to install them anyway?
 ```
-cd $STORE
-wget --no-check-certificate https://downloads.sourceforge.net/project/pcre/pcre/8.44/pcre-8.44.tar.gz?ts=gAAAAABjBmQ4Rta323sOwWWFs88OXtEm9blG2Yau14JANqa7PRAVIuo0YF_-CwG4t73C9C_d2giMURHEvG4xc1ZE3yeTlZQMDQ%3D%3D&r=https%3A%2F%2Fsourceforge.net%2Fprojects%2Fpcre%2Ffiles%2Fpcre%2F8.44%2Fpcre-8.44.tar.gz%2Fdownload
-mv pcre-8.44.tar.gz\?ts\=gAAAAABjBmQ4Rta323sOwWWFs88OXtEm9blG2Yau14JANqa7PRAVIuo0YF_-CwG4t73C9C_d2giMURHEvG4xc1ZE3yeTlZQMDQ\=\=  pcre-8.44.tar.gz
-tar -xvzf pcre-8.44.tar.gz
-mv pcre-8.44 pcre-8.44_src
-mkdir pcre-8.44
-./configure --prefix=$STORE/pcre-8.44
+## pcre
+wget github.com/PCRE2Project/pcre2/releases/download/pcre2-10.42/pcre2-10.42.tar.gz
+tar -zxf pcre2-10.42.tar.gz
+mkdir pcre_install
+cd pcre2-10.42
+./configure  --prefix=/lustre/fs5/vgl/store/vgl_galaxy/newnginx/pcre_install
 make
 make install
-```
 
-zlib: using 1.2.11 as it's what's indicated in the example on nginx website
-```
-cd $STORE
-wget https://github.com/madler/zlib/archive/refs/tags/v1.2.11.tar.gz
-```
-
-openssl: 1.1.1.g
-```
-cd $STORE
-wget https://github.com/openssl/openssl/archive/refs/tags/OpenSSL_1_1_1g.tar.gz
-```
-
-symlinked their binaries in $STORE/bin/
-
-download nginx source etc
-```
-### mainline
-wget https://nginx.org/download/nginx-1.19.0.tar.gz
-tar zxf nginx-1.19.0.tar.gz
-### stable
-wget https://nginx.org/download/nginx-1.18.0.tar.gz
-tar zxf nginx-1.18.0.tar.gz
-### renaming src and making install dirs
-mv nginx-1.18.0/ ngi nx-1.18.0_src
-mv nginx-1.19.0/ nginx-1.19.0_src
-
-### conf / install
-cd ../nginx-1.18.0_src/
-./configure --prefix=$STORE/nginx-1.18.0 --with-pcre=$STORE/pcre-8.44 --with-zlib=$STORE/zlib-1.2.11 --user=vgl_galaxy --with-http_ssl_module --with-stream --with-debug --with-file-aio --with-http_gunzip_module --with-http_ssl_module --with-stream_ssl_module --with-threads
-## ok that throws an error. lmfao
-
-./configure --prefix=$STORE/nginx-1.19.0 --user=vgl_galaxy --with-http_ssl_module --with-stream --with-debug --with-http_gunzip_module --with-stream_ssl_module --with-threads
-# checking for openat(), fstatat() ... found
-# checking for getaddrinfo() ... found
-# checking for PCRE library ... found
-# checking for PCRE JIT support ... found
-# checking for OpenSSL library ... found
-# checking for zlib library ... found
-# creating objs/Makefile
-# 
-# Configuration summary
-#   + using threads
-#   + using system PCRE library
-#   + using system OpenSSL library
-#   + using system zlib library
-# 
-#   nginx path prefix: "/lustre/fs5/vgl/store/vgl_galaxy//nginx-1.19.0"
-#   nginx binary file: "/lustre/fs5/vgl/store/vgl_galaxy//nginx-1.19.0/sbin/nginx"
-#   nginx modules path: "/lustre/fs5/vgl/store/vgl_galaxy//nginx-1.19.0/modules"
-#   nginx configuration prefix: "/lustre/fs5/vgl/store/vgl_galaxy//nginx-1.19.0/conf"
-#   nginx configuration file: "/lustre/fs5/vgl/store/vgl_galaxy//nginx-1.19.0/conf/nginx.conf"
-#   nginx pid file: "/lustre/fs5/vgl/store/vgl_galaxy//nginx-1.19.0/logs/nginx.pid"
-#   nginx error log file: "/lustre/fs5/vgl/store/vgl_galaxy//nginx-1.19.0/logs/error.log"
-#   nginx http access log file: "/lustre/fs5/vgl/store/vgl_galaxy//nginx-1.19.0/logs/access.log"
-#   nginx http client request body temporary files: "client_body_temp"
-#   nginx http proxy temporary files: "proxy_temp"
-#   nginx http fastcgi temporary files: "fastcgi_temp"
-#   nginx http uwsgi temporary files: "uwsgi_temp"
-#   nginx http scgi temporary files: "scgi_temp"
-```
-MY GUY WHERE DID YOU FIND THE SYSTEM LIBRARIES THEY'RE NOT INSTALLED ON A SYSTEM LEVEL THEY ARE SITTING IN A FOLDER NEXT TO YOU whatever
-```
+## zlib
+wget https://www.zlib.net/zlib-1.3.1.tar.gz
+tar -xvzf zlib-1.3.1.tar.gz
+mkdir zlib_install
+cd zlib-1.3.1
+./configure --prefix=/lustre/fs5/vgl/store/vgl_galaxy/newnginx/zlib_install
 make
 make install
+
+## openssl
+wget http://www.openssl.org/source/openssl-1.1.1v.tar.gz
+tar -zxf openssl-1.1.1v.tar.gz
+mkdir openssl_install
+openssl-1.1.1v
+./Configure linux-x86_64 --prefix=/lustre/fs5/vgl/store/vgl_galaxy/newnginx/openssl_install/
+make
+make install
+
+## nginx
+cd nginx-1.26.1
+./configure --prefix=/lustre/fs5/vgl/store/vgl_galaxy/newnginx/nginx_install --with-stream --with-http_ssl_module --with-pcre=../pcre2-10.42 --with-openssl=../openssl-1.1.1v --with-zlib=../zlib-1.3.1
+```
+
+
 ```
 add to end of `galaxyservers.yml`:
 ```
