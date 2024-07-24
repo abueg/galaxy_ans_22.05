@@ -218,8 +218,6 @@ cd nginx-1.26.1
 ./configure --prefix=/lustre/fs5/vgl/store/vgl_galaxy/newnginx/nginx_install --with-stream --with-http_ssl_module --with-pcre=../pcre2-10.42 --with-openssl=../openssl-1.1.1v --with-zlib=../zlib-1.3.1
 ```
 
-
-
 add to end of `galaxyservers.yml`:
 ```
 # NGINX
@@ -252,3 +250,19 @@ nginx_conf_http:
       image/svg+xml
       image/x-icon
 ```
+
+### aasfsd 24july2024) upgrading galaxy versions to 24.x
+going to target https://github.com/galaxyproject/galaxy/releases/tag/v24.0.2
+```
+[vgl_galaxy@vglgalaxy /lustre/fs5/vgl/scratch/vgl_galaxy]$ galaxyctlenv 
+(venv) [vgl_galaxy@vglgalaxy /lustre/fs5/vgl/scratch/vgl_galaxy]$ galaxyctl stop
+```
+
+
+
+
+
+
+
+
+
