@@ -310,7 +310,38 @@ Written by Roland McGrath and Ulrich Drepper.
 ```
 going to try to use nvm to install a more recent node version, see if that works?
 
+```
+[vgl_galaxy@vglgalaxy /lustre/fs5/vgl/store/vgl_galaxy]$ wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+=> Downloading nvm from git to '/ru-auth/local/home/vgl_galaxy/.nvm'
+=> Cloning into '/ru-auth/local/home/vgl_galaxy/.nvm'...
+remote: Enumerating objects: 369, done.
+remote: Counting objects: 100% (369/369), done.
+remote: Compressing objects: 100% (315/315), done.
+remote: Total 369 (delta 42), reused 165 (delta 27), pack-reused 0
+Receiving objects: 100% (369/369), 368.22 KiB | 0 bytes/s, done.
+Resolving deltas: 100% (42/42), done.
+* (detached from FETCH_HEAD)
+  master
+=> Compressing and cleaning up git repository
 
+=> Appending nvm source string to /ru-auth/local/home/vgl_galaxy/.bashrc
+=> Appending bash_completion source string to /ru-auth/local/home/vgl_galaxy/.bashrc
+=> Close and reopen your terminal to start using nvm or run the following to use it now:
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+## ran the above commands
+
+nvm install 18.12.1
+
+## lol ok disk quota exceeded on home i should have moved it. i will do that
+
+
+
+
+```
 
 
 
