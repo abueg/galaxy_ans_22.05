@@ -261,7 +261,44 @@ backing up database first. command started 12:15am, finished by 12:22 am
 ```
 cd $SCRATCH/pg_srvr_backups
 pg_dump galaxy | gzip > galaxy_database-20240724-1215.sql.gz
+```
+changed release tag to 22.1 and ran playbook, errored out here:
+```
+TASK [galaxyproject.galaxy : Ensure pip is the desired release] ************************************************************************
+skipping: [vglgalaxy.rockefeller.edu]
 
+TASK [galaxyproject.galaxy : Ensure setuptools is latest working release (<58)] ********************************************************
+skipping: [vglgalaxy.rockefeller.edu]
+
+TASK [galaxyproject.galaxy : Install nodeenv if it doesn't exist] **********************************************************************
+skipping: [vglgalaxy.rockefeller.edu]
+
+TASK [galaxyproject.galaxy : Report preferred Node.js version] *************************************************************************
+ok: [vglgalaxy.rockefeller.edu] => {
+    "galaxy_node_version": "18.12.1"
+}
+
+TASK [galaxyproject.galaxy : Check if node is installed] *******************************************************************************
+ok: [vglgalaxy.rockefeller.edu]
+
+TASK [galaxyproject.galaxy : Collect installed node version] ***************************************************************************
+ok: [vglgalaxy.rockefeller.edu]
+
+TASK [galaxyproject.galaxy : Remove node_modules directory when upgrading node] ********************************************************
+changed: [vglgalaxy.rockefeller.edu]
+
+TASK [galaxyproject.galaxy : Install or upgrade node] **********************************************************************************
+changed: [vglgalaxy.rockefeller.edu]
+
+TASK [galaxyproject.galaxy : Install yarn] *********************************************************************************************
+fatal: [vglgalaxy.rockefeller.edu]: FAILED! => {"changed": false, "cmd": "/lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy//venv/bin/npm install --global yarn", "msg": "node: /usr/lib64/libm.so.6: version `GLIBC_2.27' not found (required by node)\nnode: /usr/lib64/libc.so.6: version `GLIBC_2.25' not found (required by node)\nnode: /usr/lib64/libc.so.6: version `GLIBC_2.28' not found (required by node)\nnode: /usr/lib64/libstdc++.so.6: version `CXXABI_1.3.9' not found (required by node)\nnode: /usr/lib64/libstdc++.so.6: version `GLIBCXX_3.4.20' not found (required by node)\nnode: /usr/lib64/libstdc++.so.6: version `GLIBCXX_3.4.21' not found (required by node)", "rc": 1, "stderr": "node: /usr/lib64/libm.so.6: version `GLIBC_2.27' not found (required by node)\nnode: /usr/lib64/libc.so.6: version `GLIBC_2.25' not found (required by node)\nnode: /usr/lib64/libc.so.6: version `GLIBC_2.28' not found (required by node)\nnode: /usr/lib64/libstdc++.so.6: version `CXXABI_1.3.9' not found (required by node)\nnode: /usr/lib64/libstdc++.so.6: version `GLIBCXX_3.4.20' not found (required by node)\nnode: /usr/lib64/libstdc++.so.6: version `GLIBCXX_3.4.21' not found (required by node)\n", "stderr_lines": ["node: /usr/lib64/libm.so.6: version `GLIBC_2.27' not found (required by node)", "node: /usr/lib64/libc.so.6: version `GLIBC_2.25' not found (required by node)", "node: /usr/lib64/libc.so.6: version `GLIBC_2.28' not found (required by node)", "node: /usr/lib64/libstdc++.so.6: version `CXXABI_1.3.9' not found (required by node)", "node: /usr/lib64/libstdc++.so.6: version `GLIBCXX_3.4.20' not found (required by node)", "node: /usr/lib64/libstdc++.so.6: version `GLIBCXX_3.4.21' not found (required by node)"], "stdout": "", "stdout_lines": []}
+
+RUNNING HANDLER [galaxyproject.galaxy : galaxy mule restart] ***************************************************************************
+
+RUNNING HANDLER [galaxyproject.galaxy : galaxy gravity restart] ************************************************************************
+
+PLAY RECAP *****************************************************************************************************************************
+vglgalaxy.rockefeller.edu  : ok=73   changed=10   unreachable=0    failed=1    skipped=22   rescued=0    ignored=0
 ```
 
 
