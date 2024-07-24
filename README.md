@@ -299,6 +299,14 @@ RUNNING HANDLER [galaxyproject.galaxy : galaxy gravity restart] ****************
 
 PLAY RECAP *****************************************************************************************************************************
 vglgalaxy.rockefeller.edu  : ok=73   changed=10   unreachable=0    failed=1    skipped=22   rescued=0    ignored=0
+
+
+[vgl_galaxy@vglgalaxy /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_ans_22.05]$ ldd --version
+ldd (GNU libc) 2.17
+Copyright (C) 2012 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+Written by Roland McGrath and Ulrich Drepper.
 ```
 
 
