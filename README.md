@@ -257,6 +257,12 @@ going to target https://github.com/galaxyproject/galaxy/releases/tag/v24.0.2
 [vgl_galaxy@vglgalaxy /lustre/fs5/vgl/scratch/vgl_galaxy]$ galaxyctlenv 
 (venv) [vgl_galaxy@vglgalaxy /lustre/fs5/vgl/scratch/vgl_galaxy]$ galaxyctl stop
 ```
+backing up database first. command started 12:15am, finished at ...
+```
+cd $SCRATCH/pg_srvr_backups
+pg_dump galaxy | gzip > galaxy_database-20240724-1215.sql.gz
+
+```
 
 
 
