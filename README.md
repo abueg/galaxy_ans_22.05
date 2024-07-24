@@ -308,8 +308,7 @@ This is free software; see the source for copying conditions.  There is NO
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 Written by Roland McGrath and Ulrich Drepper.
 ```
-
-
+going to try to use nvm to install a more recent node version, see if that works?
 
 
 
