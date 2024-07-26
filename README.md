@@ -650,3 +650,9 @@ Traceback (most recent call last):
 KeyError: 's3'
 ```
 maybe i'll try removing the `s3` sources from the `file_sources.yml`?
+```
+[vgl_galaxy@vglgalaxy /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_ans_22.05]$ cp templates/galaxy/config/file_sources_conf.yml templates/galaxy/config/file_sources_conf_NOS3.yml
+```
+ok trying that after two false starts. need to remember to actually point to the right new file in `group_vars/galaxyservers.yml` and then actually. re run. the playbook lmao
+
+ok that eliminates the `s3` error but now there are errors from tool XMLs buh
