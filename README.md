@@ -624,3 +624,29 @@ supervisord is not running
 the `galaxy.yml` file pointed at has `job_config_file: /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy//config/job_conf.xml` in it, so i'm not sure...? i guess i'll add this block: https://training.galaxyproject.org/training-material/topics/admin/tutorials/ansible-galaxy/tutorial.html#hands-on-job-conf which isn't present in my `group_vars/galaxyservers.yml`, maybe it was added more recently...
 
 wait. i think that's going to use the variable inside that `.yml` file instead of just pointing to my existing config file template. i'll just try to see if it can spin up without having to do that....
+
+ok that failed -- job handlers are marked as failed which i think can be expected given the warning, but celery & gunicorn logs have a key error about 's3':
+```
+galaxy.jobs DEBUG 2024-07-26 16:57:51,992 [pN:main,p:988,tN:MainThread] Done loading job configuration
+Traceback (most recent call last):
+  File "/lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/server/lib/galaxy/webapps/galaxy/buildapp.py", line 60, in app_pair
+    app = galaxy.app.UniverseApplication(global_conf=global_conf, is_webapp=True, **kwargs)
+  File "/lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/server/lib/galaxy/app.py", line 698, in __init__
+    super().__init__(fsmon=True, **kwargs)
+  File "/lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/server/lib/galaxy/app.py", line 622, in __init__
+    file_sources = ConfiguredFileSources(
+  File "/lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/server/lib/galaxy/files/__init__.py", line 148, in __init__
+    file_sources = self._load_plugins_from_file(configured_file_source_conf.conf_file)
+  File "/lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/server/lib/galaxy/files/__init__.py", line 187, in _load_plugins_from_file
+    return self._parse_plugin_source(plugin_source)
+  File "/lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/server/lib/galaxy/files/__init__.py", line 190, in _parse_plugin_source
+    return self._plugin_loader.load_plugins(plugin_source, self._file_sources_config)
+  File "/lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/server/lib/galaxy/files/plugins.py", line 100, in load_plugins
+    return load_plugins(
+  File "/lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/server/lib/galaxy/util/plugin_config.py", line 59, in load_plugins
+    return __load_plugins_from_dicts(
+  File "/lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/server/lib/galaxy/util/plugin_config.py", line 129, in __load_plugins_from_dicts
+    plugin = plugins_dict[plugin_type](**plugin_kwds)
+KeyError: 's3'
+```
+maybe i'll try removing the `s3` sources from the `file_sources.yml`?
