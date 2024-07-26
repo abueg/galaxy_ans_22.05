@@ -489,7 +489,51 @@ ok i'm going to move the `$GALAXY_SRV/server/` and `$GALAXY_SRV/venv/` folders a
 [vgl_galaxy@vglgalaxy /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_ans_22.05]$ mv $GALAXYSRV/server/ $SCRATCH/debug_24jul2024
 [vgl_galaxy@vglgalaxy /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_ans_22.05]$ mv $GALAXYSRV/venv/ $SCRATCH/debug_24jul2024
 [vgl_galaxy@vglgalaxy /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_ans_22.05]$ ansible-playbook galaxy.yml
-```
+...
+TASK [galaxyproject.galaxy : Include path management tasks] ****************************************************************************************************
+included: /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_ans_22.05/roles/galaxyproject.galaxy/tasks/paths.yml for vglgalaxy.rockefeller.edu
 
+TASK [galaxyproject.galaxy : Create galaxy_root] ***************************************************************************************************************
+ok: [vglgalaxy.rockefeller.edu]
+
+TASK [galaxyproject.galaxy : Create additional privilege separated directories] ********************************************************************************
+changed: [vglgalaxy.rockefeller.edu] => (item=/lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy//venv)
+changed: [vglgalaxy.rockefeller.edu] => (item=/lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy//server)
+ok: [vglgalaxy.rockefeller.edu] => (item=/lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy//config)
+ok: [vglgalaxy.rockefeller.edu] => (item=/lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy//local_tools)
+...
+TASK [galaxyproject.galaxy : Collect installed node version] ***************************************************************************************************
+skipping: [vglgalaxy.rockefeller.edu]
+
+TASK [galaxyproject.galaxy : Remove node_modules directory when upgrading node] ********************************************************************************
+ok: [vglgalaxy.rockefeller.edu]
+
+TASK [galaxyproject.galaxy : Install or upgrade node] **********************************************************************************************************
+changed: [vglgalaxy.rockefeller.edu]
+
+TASK [galaxyproject.galaxy : Install yarn] *********************************************************************************************************************
+fatal: [vglgalaxy.rockefeller.edu]: FAILED! => {"changed": false, "cmd": "/lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy//venv/bin/npm install --global yarn", "msg": "node: /usr/lib64/libm.so.6: version `GLIBC_2.27' not found (required by node)\nnode: /usr/lib64/libc.so.6: version `GLIBC_2.25' not found (required by node)\nnode: /usr/lib64/libc.so.6: version `GLIBC_2.28' not found (required by node)", "rc": 1, "stderr": "node: /usr/lib64/libm.so.6: version `GLIBC_2.27' not found (required by node)\nnode: /usr/lib64/libc.so.6: version `GLIBC_2.25' not found (required by node)\nnode: /usr/lib64/libc.so.6: version `GLIBC_2.28' not found (required by node)\n", "stderr_lines": ["node: /usr/lib64/libm.so.6: version `GLIBC_2.27' not found (required by node)", "node: /usr/lib64/libc.so.6: version `GLIBC_2.25' not found (required by node)", "node: /usr/lib64/libc.so.6: version `GLIBC_2.28' not found (required by node)"], "stdout": "", "stdout_lines": []}
+
+RUNNING HANDLER [galaxyproject.galaxy : galaxy mule restart] ***************************************************************************************************
+
+RUNNING HANDLER [galaxyproject.galaxy : galaxy gravity restart]
+```
+ok that... puts it back to the same node error as before. maybe the yarn error was because linking to the node binary in venv doesn't link everything else needed?
+```
+[vgl_galaxy@vglgalaxy /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_ans_22.05]$ l $GALAXYSRV/venv/bin/n*
+-rwxr-xr-x 1 vgl_galaxy vgl 1.1K Jul 26 15:35 /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/venv/bin/nib_chrom_intervals_to_fasta.py*
+-rwxr-xr-x 1 vgl_galaxy vgl  864 Jul 26 15:35 /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/venv/bin/nib_intervals_to_fasta.py*
+-rwxr-xr-x 1 vgl_galaxy vgl  268 Jul 26 15:35 /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/venv/bin/nib_length.py*
+-rwxr-xr-x 1 vgl_galaxy vgl  83M Nov  4  2022 /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/venv/bin/node*
+-rwxr-xr-x 1 vgl_galaxy vgl  258 Jul 26 15:35 /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/venv/bin/nodeenv*
+lrwxrwxrwx 1 vgl_galaxy vgl    4 Jul 26 15:36 /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/venv/bin/nodejs -> node*
+-rwxr-xr-x 1 vgl_galaxy vgl  285 Jul 26 15:35 /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/venv/bin/normalizer*
+lrwxrwxrwx 1 vgl_galaxy vgl   38 Jul 26 15:36 /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/venv/bin/npm -> ../lib/node_modules/npm/bin/npm-cli.js*
+lrwxrwxrwx 1 vgl_galaxy vgl   38 Jul 26 15:36 /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/venv/bin/npx -> ../lib/node_modules/npm/bin/npx-cli.js*
+[vgl_galaxy@vglgalaxy /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_ans_22.05]$ l $GALAXYSRV/venv/bin/y*
+ls: cannot access /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/venv/bin/y*: No such file or directory
+[vgl_galaxy@vglgalaxy /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_ans_22.05]$ l $GALAXYSRV/venv/bin/core*
+lrwxrwxrwx 1 vgl_galaxy vgl 45 Jul 26 15:36 /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/venv/bin/corepack -> ../lib/node_modules/corepack/dist/corepack.js*
+```
 
 
