@@ -542,5 +542,31 @@ how is that sitll the nov 2022 node.
 [vgl_galaxy@vglgalaxy /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_ans_22.05]$ mkdir ../debug_24jul2024/nodeagain/
 [vgl_galaxy@vglgalaxy /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_ans_22.05]$ mv $GALAXYSRV/venv/bin/node ../debug_24jul2024/nodeagain/
 [vgl_galaxy@vglgalaxy /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_ans_22.05]$ ln -s $STORE/node/node $GALAXYSRV/venv/bin/node
+## ran playbook again...
+...
+TASK [galaxyproject.galaxy : Report preferred Node.js version] *************************************************************************************************
+ok: [vglgalaxy.rockefeller.edu] => {
+    "galaxy_node_version": "18.12.1"
+}
+
+TASK [galaxyproject.galaxy : Check if node is installed] *******************************************************************************************************
+ok: [vglgalaxy.rockefeller.edu]
+
+TASK [galaxyproject.galaxy : Collect installed node version] ***************************************************************************************************
+ok: [vglgalaxy.rockefeller.edu]
+
+TASK [galaxyproject.galaxy : Remove node_modules directory when upgrading node] ********************************************************************************
+skipping: [vglgalaxy.rockefeller.edu]
+
+TASK [galaxyproject.galaxy : Install or upgrade node] **********************************************************************************************************
+skipping: [vglgalaxy.rockefeller.edu]
+
+TASK [galaxyproject.galaxy : Install yarn] *********************************************************************************************************************
+changed: [vglgalaxy.rockefeller.edu]
+
+TASK [galaxyproject.galaxy : Include client build process] *****************************************************************************************************
+included: /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_ans_22.05/roles/galaxyproject.galaxy/tasks/_inc_client_build_make.yml for vglgalaxy.rockefeller.edu
+
+TASK [galaxyproject.galaxy : Build client]
 ```
 
