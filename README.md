@@ -608,4 +608,19 @@ vglgalaxy.rockefeller.edu  : ok=77   changed=8    unreachable=0    failed=0    s
 
 [vgl_galaxy@vglgalaxy /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_ans_22.05]$
 ```
-fr? 👀
+looks ok, but then `galaxyctl start` doesn't work, says there's no configured instances.
+```
+(venv) [vgl_galaxy@vglgalaxy /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_ans_22.05]$ echo $GALAXY_CONFIG_FILE
+
+(venv) [vgl_galaxy@vglgalaxy /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_ans_22.05]$ export GALAXY_CONFIG_FILE=/lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/config/galaxy.yml
+(venv) [vgl_galaxy@vglgalaxy /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_ans_22.05]$ galaxyctl list
+Dynamic handlers are configured in Gravity but Galaxy is not configured to assign jobs to handlers dynamically, so these handlers will not handle jobs. Set the job handler assignment method in the Galaxy job configuration to `db-skip-locked` or `db-transaction-isolation` to fix this.
+INSTANCE NAME       CONFIG PATH
+_default_           /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/config/galaxy.yml
+(venv) [vgl_galaxy@vglgalaxy /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_ans_22.05]$ galaxyctl status
+Dynamic handlers are configured in Gravity but Galaxy is not configured to assign jobs to handlers dynamically, so these handlers will not handle jobs. Set the job handler assignment method in the Galaxy job configuration to `db-skip-locked` or `db-transaction-isolation` to fix this.
+supervisord is not running
+```
+the `galaxy.yml` file pointed at has `job_config_file: /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy//config/job_conf.xml` in it, so i'm not sure...? i guess i'll add this block: https://training.galaxyproject.org/training-material/topics/admin/tutorials/ansible-galaxy/tutorial.html#hands-on-job-conf which isn't present in my `group_vars/galaxyservers.yml`, maybe it was added more recently...
+
+wait. i think that's going to use the variable inside that `.yml` file instead of just pointing to my existing config file template. i'll just try to see if it can spin up without having to do that....
