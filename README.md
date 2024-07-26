@@ -567,6 +567,45 @@ changed: [vglgalaxy.rockefeller.edu]
 TASK [galaxyproject.galaxy : Include client build process] *****************************************************************************************************
 included: /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_ans_22.05/roles/galaxyproject.galaxy/tasks/_inc_client_build_make.yml for vglgalaxy.rockefeller.edu
 
-TASK [galaxyproject.galaxy : Build client]
-```
+TASK [galaxyproject.galaxy : Build client] *********************************************************************************************************************
+changed: [vglgalaxy.rockefeller.edu]
 
+TASK [galaxyproject.galaxy : Fetch client version] *************************************************************************************************************
+ok: [vglgalaxy.rockefeller.edu]
+
+TASK [galaxyproject.galaxy : Set client build version fact] ****************************************************************************************************
+ok: [vglgalaxy.rockefeller.edu]
+
+TASK [galaxyproject.galaxy : Ensure that client update succeeded] **********************************************************************************************
+skipping: [vglgalaxy.rockefeller.edu]
+
+TASK [galaxyproject.galaxy : Include error document setup tasks] ***********************************************************************************************
+skipping: [vglgalaxy.rockefeller.edu]
+
+TASK [galaxyproject.galaxy : Include Gravity setup tasks] ******************************************************************************************************
+included: /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_ans_22.05/roles/galaxyproject.galaxy/tasks/gravity.yml for vglgalaxy.rockefeller.edu
+
+TASK [galaxyproject.galaxy : Register Galaxy config with Gravity] **********************************************************************************************
+ok: [vglgalaxy.rockefeller.edu]
+
+TASK [galaxyproject.galaxy : Update Gravity process management files] ******************************************************************************************
+ok: [vglgalaxy.rockefeller.edu]
+
+TASK [galaxyproject.galaxy : Include systemd unit setup tasks (Galaxy)] ****************************************************************************************
+skipping: [vglgalaxy.rockefeller.edu]
+
+TASK [galaxyproject.galaxy : Include systemd unit setup tasks (Reports)] ***************************************************************************************
+skipping: [vglgalaxy.rockefeller.edu]
+
+RUNNING HANDLER [galaxyproject.galaxy : galaxy mule restart] ***************************************************************************************************
+skipping: [vglgalaxy.rockefeller.edu]
+
+RUNNING HANDLER [galaxyproject.galaxy : galaxy gravity restart] ************************************************************************************************
+skipping: [vglgalaxy.rockefeller.edu]
+
+PLAY RECAP *****************************************************************************************************************************************************
+vglgalaxy.rockefeller.edu  : ok=77   changed=8    unreachable=0    failed=0    skipped=32   rescued=0    ignored=0
+
+[vgl_galaxy@vglgalaxy /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_ans_22.05]$
+```
+fr? 👀
