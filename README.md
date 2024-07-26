@@ -537,5 +537,10 @@ lrwxrwxrwx 1 vgl_galaxy vgl 45 Jul 26 15:36 /lustre/fs5/vgl/scratch/vgl_galaxy/g
 [vgl_galaxy@vglgalaxy /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_ans_22.05]$ which gcc
 /rugpfs/fs0/ruit/store/ruitsoft/soft/spack_2020b/opt/spack/linux-rhel7-haswell/gcc-8.3.0/gcc-9.3.0-wsvuxinmwdi27tplqhqxoqpyu45sqq5i/bin/gcc
 ```
-
+how is that sitll the nov 2022 node. 
+```
+[vgl_galaxy@vglgalaxy /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_ans_22.05]$ mkdir ../debug_24jul2024/nodeagain/
+[vgl_galaxy@vglgalaxy /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_ans_22.05]$ mv $GALAXYSRV/venv/bin/node ../debug_24jul2024/nodeagain/
+[vgl_galaxy@vglgalaxy /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_ans_22.05]$ ln -s $STORE/node/node $GALAXYSRV/venv/bin/node
+```
 
