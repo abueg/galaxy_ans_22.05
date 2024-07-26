@@ -402,8 +402,94 @@ PLAY RECAP *********************************************************************
 vglgalaxy.rockefeller.edu  : ok=71   changed=7    unreachable=0    failed=1    skipped=26   rescued=0    ignored=0
 
 ```
+ok i think i am just going to pick the server up and put it somewhere else, and try to rebuild in the same spot from scratch. how big is server
+```
+[vgl_galaxy@vglgalaxy /lustre/fs5/vgl/scratch/vgl_galaxy]$ du -sh galaxy_srv/galaxy/
+du: cannot access ‘galaxy_srv/galaxy/var/tmp/wgunicorn-9x4j26r8’: No such file or directory
+du: cannot access ‘galaxy_srv/galaxy/var/tmp/wgunicorn-lvh_fehv’: No such file or directory
+du: cannot access ‘galaxy_srv/galaxy/var/tmp/wgunicorn-but4sa5e’: No such file or directory
+du: cannot access ‘galaxy_srv/galaxy/var/tmp/wgunicorn-0uturltg’: No such file or directory
+du: cannot access ‘galaxy_srv/galaxy/var/tmp/wgunicorn-25a40ud9’: No such file or directory
+du: cannot access ‘galaxy_srv/galaxy/var/tmp/wgunicorn-59n6ywfl’: No such file or directory
+du: cannot access ‘galaxy_srv/galaxy/var/tmp/wgunicorn-zvskwfhv’: No such file or directory
+du: cannot access ‘galaxy_srv/galaxy/var/tmp/wgunicorn-m8spk3_x’: No such file or directory
+du: cannot access ‘galaxy_srv/galaxy/var/tmp/wgunicorn-nnj380im’: No such file or directory
+du: cannot access ‘galaxy_srv/galaxy/var/tmp/wgunicorn-1zi8w17r’: No such file or directory
+du: cannot access ‘galaxy_srv/galaxy/var/tmp/wgunicorn-hihdaq33’: No such file or directory
+du: cannot access ‘galaxy_srv/galaxy/var/tmp/tmp_rfd5q57’: No such file or directory
+du: cannot access ‘galaxy_srv/galaxy/var/tmp/wgunicorn-bs9bjj04’: No such file or directory
+du: cannot access ‘galaxy_srv/galaxy/var/tmp/wgunicorn-u9y4qxnd’: No such file or directory
+du: cannot access ‘galaxy_srv/galaxy/var/tmp/wgunicorn-acnz7bqu’: No such file or directory
+du: cannot access ‘galaxy_srv/galaxy/var/tmp/wgunicorn-giufe2xi’: No such file or directory
+du: cannot access ‘galaxy_srv/galaxy/var/tmp/wgunicorn-_cmihpo5’: No such file or directory
+du: cannot access ‘galaxy_srv/galaxy/var/tmp/wgunicorn-6kye_xrs’: No such file or directory
+du: cannot access ‘galaxy_srv/galaxy/var/tmp/wgunicorn-x5m6neb4’: No such file or directory
+du: cannot access ‘galaxy_srv/galaxy/var/tmp/wgunicorn-i2123_2w’: No such file or directory
+du: cannot access ‘galaxy_srv/galaxy/var/tmp/wgunicorn-sa4y9qdd’: No such file or directory
+du: cannot access ‘galaxy_srv/galaxy/var/tmp/wgunicorn-syt49ssk’: No such file or directory
+du: cannot access ‘galaxy_srv/galaxy/var/tmp/wgunicorn-8ymd3bj4’: No such file or directory
+du: cannot access ‘galaxy_srv/galaxy/var/tmp/wgunicorn-i5ngnnqg’: No such file or directory
+74T     galaxy_srv/galaxy/
+```
+ok big. what the hell is in there
+```
+[vgl_galaxy@vglgalaxy /lustre/fs5/vgl/scratch/vgl_galaxy]$ du -sh galaxy_srv/galaxy/jobs/
+74T     galaxy_srv/galaxy/jobs/
+[vgl_galaxy@vglgalaxy /lustre/fs5/vgl/scratch/vgl_galaxy]$ du -sh galaxy_srv/galaxy/server
+4.5G    galaxy_srv/galaxy/server
+```
+ok it's mostly the jobs folder. maybe i run clean-up script first.... or just remove `galaxy_srv/galaxy/server` and try the playbook? i should probably clean up anyway but i would like to do that with a working install to make sure nothing went weird. https://training.galaxyproject.org/training-material/topics/admin/tutorials/backup-cleanup/tutorial.html#hands-on-configuring-postgresql-backups looks like options to set up tmpwatch to remove the failed job dirs. 
+```
+[vgl_galaxy@vglgalaxy /lustre/fs5/vgl/scratch/vgl_galaxy]$ gxadmin galaxy
+Unknown command
+gxadmin usage:
+
+galaxy: Galaxy Administration
+
+Local-only commands can be configured in /ru-auth/local/home/vgl_galaxy/.config/gxadmin-local.sh
 
 
+    galaxy amqp-test <amqp_url>                           Test a given AMQP URL for connectivity
+    galaxy cleanup [days]                                 Cleanup histories/hdas/etc for past N days (default=30)
+    galaxy cleanup-jwd <working_dir> [1|months ago]       (NEW) Cleanup job working directories
+    galaxy decode <encoded-id>                            Decode an encoded ID
+    galaxy encode <encoded-id>                            Encode an ID
+    galaxy fav_tools                                      Favourite tools in Galaxy DB
+    galaxy fix-conda-env <conda_dir/envs/>                Fix broken conda environments
+    galaxy ie-list                                        List GIEs
+    galaxy ie-show [gie-galaxy-job-id]                    Report on a GIE [HTCondor Only!]
+    galaxy migrate-tool-install-from-sqlite [sqlite-db]   Converts SQLite version into normal potsgres toolshed repository tables
+    galaxy migrate-tool-install-to-sqlite                 Converts normal potsgres toolshed repository tables into the SQLite version
+
+All commands can be prefixed with "time" to print execution time to stderr
+
+help / -h / --help : this message. Invoke '--help' on any subcommand for help specific to that subcommand
+Tip: Run "gxadmin meta whatsnew" to find out what's new in this release!
+[vgl_galaxy@vglgalaxy /lustre/fs5/vgl/scratch/vgl_galaxy]$ gxadmin galaxy cleanup-jwd --help
+galaxy cleanup-jwd -  (NEW) Cleanup job working directories
+
+**SYNOPSIS**
+
+    gxadmin galaxy cleanup-jwd <working_dir> [1|months ago]
+
+**NOTES**
+
+Scans through a provided job working directory subfolder, e.g.
+job_working_directory/ without the 005 subdir to find all folders which
+were changed less recently than N months.
+
+ Then it takes the first 1000 entries and cleans them up. This was more
+of a hack to handle the fact that the list produced by find is really
+long, and the for loop hangs until it's done generating the list.
+```
+this is also worth a try
+
+ok i'm going to move the `$GALAXY_SRV/server/` and `$GALAXY_SRV/venv/` folders and try to rebuild... no database stuff right now, will try after.
+```
+[vgl_galaxy@vglgalaxy /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_ans_22.05]$ mv $GALAXYSRV/server/ $SCRATCH/debug_24jul2024
+[vgl_galaxy@vglgalaxy /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_ans_22.05]$ mv $GALAXYSRV/venv/ $SCRATCH/debug_24jul2024
+[vgl_galaxy@vglgalaxy /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_ans_22.05]$ ansible-playbook galaxy.yml
+```
 
 
 
