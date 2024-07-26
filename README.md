@@ -352,7 +352,54 @@ fatal: [vglgalaxy.rockefeller.edu]: FAILED! => {"changed": false, "cmd": ["/lust
 PLAY RECAP *************************************************************************************************************************************************************************************************
 vglgalaxy.rockefeller.edu  : ok=66   changed=3    unreachable=0    failed=1    skipped=26   rescued=0    ignored=0
 
+## ok compiled node from scratch and then sym linked to that node, from the venv folder
+git clone https://github.com/nodejs/node
+cd node
+git checkout v18.12.1
+lmodinit
+module load gcc/9.3.0-wsvuxi
+make
+ln -s $STORE/node/node /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/venv/bin/node
 
+## seems to get past that but then yarn error. maybe i will put the server somewhere else and rebuild it entirely and see if that fixes?
+TASK [galaxyproject.galaxy : Collect installed node version] ***************************************************************************************************
+**************************
+ok: [vglgalaxy.rockefeller.edu]
+
+TASK [galaxyproject.galaxy : Remove node_modules directory when upgrading node] ********************************************************************************
+**************************
+skipping: [vglgalaxy.rockefeller.edu]
+
+TASK [galaxyproject.galaxy : Install or upgrade node] *********************************************************************************************************$
+**************************
+skipping: [vglgalaxy.rockefeller.edu]
+
+TASK [galaxyproject.galaxy : Install yarn] ********************************************************************************************************************$
+**************************
+changed: [vglgalaxy.rockefeller.edu]
+
+TASK [galaxyproject.galaxy : Include client build process] ****************************************************************************************************$
+**************************
+included: /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_ans_22.05/roles/galaxyproject.galaxy/tasks/_inc_client_build_make.yml for vglgalaxy.rockefeller.edu
+
+TASK [galaxyproject.galaxy : Build client] ********************************************************************************************************************$
+**************************
+fatal: [vglgalaxy.rockefeller.edu]: FAILED! => {"changed": false, "cmd": "/usr/bin/gmake client-production-maps", "msg": "gmake: *** [client-node-deps] Error 1$
+, "rc": 2, "stderr": "gmake: *** [client-node-deps] Error 1\n", "stderr_lines": ["gmake: *** [client-node-deps] Error 1"], "stdout": "Could not find yarn, whic$
+ is required to build the Galaxy client.\\nIt should be shipped with Galaxy's virtualenv, but to install yarn manually please visit \\033[0;34mhttps://yarnpkg.$
+om/en/docs/install\\033[0m for instructions, and package information for all platforms.\\n\nfalse;\n", "stdout_lines": ["Could not find yarn, which is required
+to build the Galaxy client.\\nIt should be shipped with Galaxy's virtualenv, but to install yarn manually please visit \\033[0;34mhttps://yarnpkg.com/en/docs/i$
+stall\\033[0m for instructions, and package information for all platforms.\\n", "false;"]}
+
+RUNNING HANDLER [galaxyproject.galaxy : galaxy mule restart] **************************************************************************************************$
+**************************
+
+RUNNING HANDLER [galaxyproject.galaxy : galaxy gravity restart] ***********************************************************************************************$
+**************************
+
+PLAY RECAP ****************************************************************************************************************************************************$
+**************************
+vglgalaxy.rockefeller.edu  : ok=71   changed=7    unreachable=0    failed=1    skipped=26   rescued=0    ignored=0
 
 ```
 
