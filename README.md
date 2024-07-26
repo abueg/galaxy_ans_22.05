@@ -655,4 +655,8 @@ maybe i'll try removing the `s3` sources from the `file_sources.yml`?
 ```
 ok trying that after two false starts. need to remember to actually point to the right new file in `group_vars/galaxyservers.yml` and then actually. re run. the playbook lmao
 
-ok that eliminates the `s3` error but now there are errors from tool XMLs buh
+ok that eliminates the `s3` error but now there are errors from tool XMLs buh... problematic ones:
+- phenotype_association/sift.xml
+- toolshed.g2.bx.psu.edu/repos/iuc/merqury/merqury/1.3+galaxy1 ( $SCRATCH/galaxy_srv/galaxy/var/shed_tools/toolshed.g2.bx.psu.edu/repos/iuc/merqury/39edec572bae/merqury/macros.xml )
+
+removed those and SHE LIVES. but ok now let's fix her
