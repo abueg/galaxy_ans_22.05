@@ -534,6 +534,8 @@ lrwxrwxrwx 1 vgl_galaxy vgl   38 Jul 26 15:36 /lustre/fs5/vgl/scratch/vgl_galaxy
 ls: cannot access /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/venv/bin/y*: No such file or directory
 [vgl_galaxy@vglgalaxy /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_ans_22.05]$ l $GALAXYSRV/venv/bin/core*
 lrwxrwxrwx 1 vgl_galaxy vgl 45 Jul 26 15:36 /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/venv/bin/corepack -> ../lib/node_modules/corepack/dist/corepack.js*
+[vgl_galaxy@vglgalaxy /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_ans_22.05]$ which gcc
+/rugpfs/fs0/ruit/store/ruitsoft/soft/spack_2020b/opt/spack/linux-rhel7-haswell/gcc-8.3.0/gcc-9.3.0-wsvuxinmwdi27tplqhqxoqpyu45sqq5i/bin/gcc
 ```
 
 
