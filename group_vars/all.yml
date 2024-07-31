@@ -1,3 +1,4 @@
+---
 # CVMFS vars
 #cvmfs_role: client
 #galaxy_cvmfs_repos_enabled: config-repo
@@ -8,3 +9,8 @@
 #- owner: vgl_galaxy
 #cvmfs_gc_user: vgl_galaxy
 #cvmfs_srv_mount: /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_ans_22.05/cvmfs_srv_mount
+# july 2024 edit: adding galaxy_user_name and galaxy_db_name variables as described in GTN admin tutorial. will not add pip_virtualenv_command as that is defined in galaxyservers.yml and we don't even have multiple hosts anyway lol
+
+
+galaxy_user_name: galaxy
+galaxy_db_name: galaxy
