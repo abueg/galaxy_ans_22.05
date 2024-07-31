@@ -35,6 +35,63 @@ galaxy_force_checkout: true
 conda_auto_install: true
 tool_dependency_dir: " {{ galaxy_tool_dependency_dir }} "
 
+# galaxy job configuration
+galaxy_job_config:
+  runners:
+  local_runner:
+    load: galaxy.jobs.runners.local:LocalJobRunner
+    workers: 4
+  slurm:
+    load: galaxy.jobs.runners.slurm:SlurmJobRunner
+    drmaa_library_path: '/ru-auth/local/home/vgl_galaxy/dev/slurm-drmaa/slurm-drmaa-1.1.3/lib/libdrmaa.so'
+  handling:
+    assign: ['db-skip-locked']
+  execution:
+    default: vgl_default
+    environments:
+      local_dest:
+        runner: local_runner
+      vgl_default:
+        runner: slurm
+        singularity_enabled: false
+        native_specification: '--partition=vgl --nodes=1 --cpus-per-task=32'
+      vgl_1cpu:
+        runner: slurm
+        singularity_enabled: false
+        native_specification: '--partition=vgl --nodes=1 --cpus-per-task=1'
+      bigmem_4cpu:
+        runner: slurm
+        singularity_enabled: false
+        native_specification: '--partition=vgl --nodes=1 --cpus-per-task=4'
+      dynamic_partition_cores:
+        runner: dynamic
+        function: dynamic_partition_cores
+      bionano:
+        runner: slurm
+        singularity_enabled: false
+        native_specification: '--partition=vgl --nodes=1 --cpus-per-task=4'
+        env:
+          - file: '/lustre/fs5/vgl/store/vgl_galaxy/bionano/bionano_setup.sh'
+      vgl:
+        runner: slurm
+        singularity_enabled: false
+        native_specification: '--partition=vgl'
+      bigmem:
+        runner: slurm
+        singularity_enabled: false
+        native_specification: '--partition=vgl_bigmem'
+    resources:
+      default: default
+      groups:
+        default: []
+        dynamic_partition_cores: [partition,cores]
+    tools:
+      - class: local # these special tools that aren't parameterized for remote execution - expression tools, upload, etc
+        execution: local_dest
+      - id: hifiasm
+        environment: vgl_4cpu
+
+
 galaxy_config:
   galaxy:
     admin_users: admin@admin.org
@@ -50,7 +107,7 @@ galaxy_config:
     # file locations
     library_import_dir: /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/data_libraries/admin/
     user_library_import_dir: /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/data_libraries/user/
-    job_config_file: "{{ galaxy_config_dir }}/job_conf.xml"
+#    job_config_file: "{{ galaxy_config_dir }}/job_conf.xml"
     dependency_resolvers_config_file: "{{ galaxy_config_dir }}/dependency_resolvers_conf.xml"
     container_resolvers_config_file: "{{ galaxy_config_dir }}/container_resolvers_conf.xml"
     job_resource_params_file: "{{ galaxy_config_dir }}/job_resource_params_conf.xml"
@@ -127,8 +184,8 @@ galaxy_config:
     farm: job-handlers:1,2
 
 galaxy_config_templates:
-  - src: templates/galaxy/config/job_conf.xml
-    dest: "{{ galaxy_config.galaxy.job_config_file }}"
+#  - src: templates/galaxy/config/job_conf.xml
+#    dest: "{{ galaxy_config.galaxy.job_config_file }}"
   - src: templates/galaxy/config/dependency_resolvers_conf.xml
     dest: "{{ galaxy_config.galaxy.dependency_resolvers_config_file }}"
   - src: templates/galaxy/config/container_resolvers_conf.xml
