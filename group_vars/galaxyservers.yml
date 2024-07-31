@@ -97,8 +97,8 @@ galaxy_config:
       handler:
         processes: 4
         pools:
-          - job-handler
-          - workflow-scheduler
+          - job-handlers
+          - workflow-schedulers
   uwsgi:
     socket: vglgalaxy.rockefeller.edu:8080
     buffer-size: 16384
