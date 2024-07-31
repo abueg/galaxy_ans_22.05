@@ -1,0 +1,44 @@
+- type: s3fs
+  label: Genome Ark
+  id: genomeark
+  doc: Access to Genome Ark open data on AWS.
+  bucket: genomeark
+  anon: true
+
+- type: ftp
+  id: ncbi-ftp
+  label: "NCBI FTP server"
+  doc: "NCBI FTP server"
+  host: "ftp.ncbi.nlm.nih.gov"
+  user: "anonymous"
+  passwd: ""
+  timeout: 10
+  port: 21
+
+
+- type: posix
+  root: '/lustre/fs5/vgl/scratch/labueg/user_import_test/'
+  id: labueg-user-import
+  label: labueg user import label
+  doc: labueg user import doc
+
+- type: posix
+  root: '/lustre/fs5/vgl/scratch/vgl_galaxy/posix_test/'
+  id: posix-test
+  label: posix test
+  doc: posix test
+  writable: true
+
+- type: posix
+  root: '/lustre/fs5/vgl/scratch/gformenti/galaxy/upload/'
+  id: gformenti-user-import
+  label: gformenti user import label
+  doc: gformenti user import doc
+
+- type: posix
+  root: '/lustre/fs5/vgl/scratch/ssecomandi/DE-EXTINCTION/REF_GENOME_RECONSTRUCTION/3_PANGENOME/1_bPatFas_HiFi/'
+  id: ssecomandi-user-import
+  label: ssecomandi user import label
+  doc: ssecomandi user import doc
+
+
