@@ -429,7 +429,9 @@ seems three main things needed to be changed before the instance could start:
 3. weird tool XMLs causing issues. deleted them but maybe i can uninstall them from the admin panel to make sure galaxy knows they're gone...? i don't use `sift` and the `merqury` version mentioned is outdated. 
 
 for (1): i will try to migrate the job_conf.xml to this format and put it in the ansible set up: https://training.galaxyproject.org/training-material/topics/admin/tutorials/ansible-galaxy/tutorial.html#hands-on-job-conf
-
+- added `yml` to the `galaxyservers.yml` file and commented out lines referring to `job_conf.xml`
+- server builds but refuses to use the `yml` data, instead uses an old `job_conf.xml` file at `$GALAXYSRV/config/job_conf.xml`. confirmed this by making edit in that file, and then rebuilding server, and observing that new server reflects the change to that file. but i want it to use the yml.....
+- maybe i'll just treat the yml like the xml file previously, and have it in `templates`. worth trying to see if it gets rid of the handler error...
 
 for (2): referring to the [usegalaxy ORG playbook, which uses a jinja template for `file_sources_conf.yml`](https://github.com/galaxyproject/usegalaxy-playbook/blob/main/env/common/templates/galaxy/config/file_sources_conf.yml.j2):
 
