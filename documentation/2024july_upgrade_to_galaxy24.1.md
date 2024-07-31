@@ -1,4 +1,14 @@
-### upgrading galaxy versions to 24.x
+## plan (whatever that means)
+
+1. back up PG database
+2. upgrade to v24
+3. fix whatever broke getting the upgrade to work
+4. test workflows
+5. clean up jobs directory
+6. probably automate cleaning up the jobs directory lol
+7. rolling PG database backups 
+
+## upgrading galaxy versions to 24.x
 going to target https://github.com/galaxyproject/galaxy/releases/tag/v24.0.2
 ```
 [vgl_galaxy@vglgalaxy /lustre/fs5/vgl/scratch/vgl_galaxy]$ galaxyctlenv 
