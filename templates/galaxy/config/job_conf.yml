@@ -1,62 +1,53 @@
 runners:
-  local_runner:
-    load: galaxy.jobs.runners.local:LocalJobRunner
-    workers: 4
-  slurm:
-    load: galaxy.jobs.runners.slurm:SlurmJobRunner
-    drmaa_library_path: '/ru-auth/local/home/vgl_galaxy/dev/slurm-drmaa/slurm-drmaa-1.1.3/lib/libdrmaa.so'
-
+local_runner:
+  load: galaxy.jobs.runners.local:LocalJobRunner
+  workers: 4
+slurm:
+  load: galaxy.jobs.runners.slurm:SlurmJobRunner
+  drmaa_library_path: '/ru-auth/local/home/vgl_galaxy/dev/slurm-drmaa/slurm-drmaa-1.1.3/lib/libdrmaa.so'
+handling:
+  assign: ['db-skip-locked']
 execution:
   default: vgl_default
   environments:
     local_dest:
       runner: local_runner
-
     vgl_default:
       runner: slurm
       singularity_enabled: false
       native_specification: '--partition=vgl --nodes=1 --cpus-per-task=32'
-      
     vgl_1cpu:
       runner: slurm
       singularity_enabled: false
       native_specification: '--partition=vgl --nodes=1 --cpus-per-task=1'
-
     bigmem_4cpu:
       runner: slurm
       singularity_enabled: false
       native_specification: '--partition=vgl --nodes=1 --cpus-per-task=4'
-
     dynamic_partition_cores:
       runner: dynamic
       function: dynamic_partition_cores
-
     bionano:
       runner: slurm
       singularity_enabled: false
       native_specification: '--partition=vgl --nodes=1 --cpus-per-task=4'
       env:
         - file: '/lustre/fs5/vgl/store/vgl_galaxy/bionano/bionano_setup.sh'
-
     vgl:
       runner: slurm
       singularity_enabled: false
       native_specification: '--partition=vgl'
-
     bigmem:
       runner: slurm
       singularity_enabled: false
       native_specification: '--partition=vgl_bigmem'
-
-resources:
-  default: default
-  groups:
-    default: []
-    dynamic_partition_cores: [partition,cores]
-
-tools:
-  - class: local # these special tools that aren't parameterized for remote execution - expression tools, upload, etc
-    execution: local_dest
-  - id: hifiasm
-    environment: dynamic_partition_cores
-    resources: dynamic_partition_cores
+  resources:
+    default: default
+    groups:
+      default: []
+      dynamic_partition_cores: [partition,cores]
+  tools:
+    - class: local # these special tools that aren't parameterized for remote execution - expression tools, upload, etc
+      execution: local_dest
+    - id: hifiasm
+      environment: vgl_4cpu
