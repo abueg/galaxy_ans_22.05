@@ -30,7 +30,7 @@ galaxy_manage_paths: true
 galaxy_layout: root-dir
 galaxy_root: /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/
 galaxy_user: {name: vgl_galaxy, shell: /bin/bash}
-galaxy_commit_id: release_22.05
+galaxy_commit_id: release_24.1
 galaxy_force_checkout: true
 conda_auto_install: true
 tool_dependency_dir: " {{ galaxy_tool_dependency_dir }} "
@@ -137,7 +137,7 @@ galaxy_config_templates:
     dest: "{{ galaxy_config.galaxy.tool_destinations_config_file }}"
   - src: templates/galaxy/config/job_resource_params_conf.xml.j2
     dest: "{{ galaxy_config.galaxy.job_resource_params_file }}"
-  - src: templates/galaxy/config/file_sources_conf.yml
+  - src: templates/galaxy/config/file_sources_conf_NOS3.yml
     dest: "{{ galaxy_config.galaxy.file_sources_config_file }}"
   - src: templates/galaxy/config/welcome.html
     dest: "{{ galaxy_server_dir }}/static/welcome.html"
@@ -165,6 +165,12 @@ galaxy_job_metrics_plugins:
 - type: env
 #- type: cgroup
 - type: hostname
+
+# vault passwords
+genomeark_export_pwd: " {{ vault_genomeark_export_pwd }} "
+genomeark_export_id: " {{ vault_genomeark_export_id }} "
+paratus_pwd: " {{ vault_paratus_pwd }} " 
+paratus_id: " {{ vault_paratus_id }} "
 
 # systemd
 galaxy_manage_systemd: false

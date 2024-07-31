@@ -1,4 +1,4 @@
-<tool id="bionano" name="Bionano Hybrid Scaffold LOCAL" version="@TOOL_VERSION@+galaxy@VERSION_SUFFIX@" profile="20.01">
+<tool id="bionano_local" name="Bionano Hybrid Scaffold LOCAL" version="@TOOL_VERSION@+galaxy@VERSION_SUFFIX@" profile="20.01">
     <description>automates the scaffolding process</description>
     <macros>
         <import>/lustre/fs5/vgl/store/vgl_galaxy/bionano/macros.xml</import>
