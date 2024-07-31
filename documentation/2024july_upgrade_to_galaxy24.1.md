@@ -427,3 +427,50 @@ seems three main things needed to be changed before the instance could start:
 1. `job_conf.{x/y}ml` seems to be included in the `galaxyservers.yml` now instead of as a `files/template`, at least the way the GTN tutorial is structured. see about putting that in the `yml` or if i can keep using the xml...
 2. had to remove `s3` sources from `file_sources.yml`, which included all the AWS bucket sources with authentication required... see what the current way of doing that is
 3. weird tool XMLs causing issues. deleted them but maybe i can uninstall them from the admin panel to make sure galaxy knows they're gone...? i don't use `sift` and the `merqury` version mentioned is outdated. 
+
+for (1): i will try to migrate the job_conf.xml to this format and put it in the ansible set up: https://training.galaxyproject.org/training-material/topics/admin/tutorials/ansible-galaxy/tutorial.html#hands-on-job-conf
+
+
+for (2): referring to the [usegalaxy ORG playbook, which uses a jinja template for `file_sources_conf.yml`](https://github.com/galaxyproject/usegalaxy-playbook/blob/main/env/common/templates/galaxy/config/file_sources_conf.yml.j2):
+
+```
+- type: s3fs
+  label: Genome Ark
+  id: genomeark
+  doc: Access to Genome Ark open data on AWS.
+  bucket: genomeark
+  anon: true
+  listings_expiry_time: 60
+
+- type: s3fs
+  label: Genome Ark EXPORT HERE
+  requires_groups: GenomeArkExport
+  id: genomeark_galaxy
+  doc: Access to Genome Ark open data on AWS.
+  bucket: genomeark
+  writable: true
+  secret: "{{ genomeark_galaxy_aws_secret_access_key }}"
+  key: "{{ genomeark_galaxy_aws_access_key_id }}"
+  listings_expiry_time: 60
+```
+so that template is referring to `genomeark_galaxy_aws_secret_{access_key/key_id}`, which shows up in [`vars.yml`](https://github.com/galaxyproject/usegalaxy-playbook/blob/ffa577ad186102f9507f5adad4f688482325df20/env/main/group_vars/galaxyservers/vars.yml#L16):
+```
+## these vars are defined in vault.yml
+#
+# used by: galaxyproject.galaxy (templating job_conf.yml)
+galaxy_job_conf_amqp_url: "{{ vault_galaxy_job_conf_amqp_url }}"
+
+# used by: object store config template
+galaxy_icat_irods_password: "{{ vault_galaxy_icat_irods_password }}"
+galaxy_minio_idc_access_key: "idc"
+galaxy_minio_idc_secret_key: "{{ vault_galaxy_minio_idc_secret_key }}"
+
+# file_sources_conf.yml
+covid_crg_ftp_staging_user: "{{ vault_covid_crg_ftp_staging_user }}"
+covid_crg_ftp_staging_passwd: "{{ vault_covid_crg_ftp_staging_passwd }}"
+genomeark_galaxy_aws_secret_access_key: "{{ vault_genomeark_galaxy_aws_secret_access_key }}"
+genomeark_galaxy_aws_access_key_id: "{{ vault_genomeark_galaxy_aws_access_key_id }}"
+genomeark_vgl_aws_secret_access_key: "{{ vault_genomeark_vgl_aws_secret_access_key }}"
+genomeark_vgl_aws_access_key_id: "{{ vault_genomeark_vgl_aws_access_key_id }}"
+```
+to edit the vault file: `ansible-vault edit group_vars/secret.yml`
