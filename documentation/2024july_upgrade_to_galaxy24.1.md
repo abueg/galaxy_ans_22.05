@@ -8,8 +8,7 @@
 6. probably automate cleaning up the jobs directory lol
 7. rolling PG database backups 
 
-## upgrading galaxy versions to 24.x
-going to target https://github.com/galaxyproject/galaxy/releases/tag/v24.0.2
+## backing up database
 ```
 [vgl_galaxy@vglgalaxy /lustre/fs5/vgl/scratch/vgl_galaxy]$ galaxyctlenv 
 (venv) [vgl_galaxy@vglgalaxy /lustre/fs5/vgl/scratch/vgl_galaxy]$ galaxyctl stop
@@ -19,6 +18,11 @@ backing up database first. command started 12:15am, finished by 12:22 am
 cd $SCRATCH/pg_srvr_backups
 pg_dump galaxy | gzip > galaxy_database-20240724-1215.sql.gz
 ```
+
+## upgrading galaxy versions to 24.x
+going to target https://github.com/galaxyproject/galaxy/releases/tag/v24.0.2
+
+
 changed release tag to 22.1 and ran playbook, errored out here:
 ```
 TASK [galaxyproject.galaxy : Ensure pip is the desired release] ************************************************************************
@@ -417,3 +421,9 @@ ok that eliminates the `s3` error but now there are errors from tool XMLs buh...
 - toolshed.g2.bx.psu.edu/repos/iuc/merqury/merqury/1.3+galaxy1 ( $SCRATCH/galaxy_srv/galaxy/var/shed_tools/toolshed.g2.bx.psu.edu/repos/iuc/merqury/39edec572bae/merqury/macros.xml )
 
 removed those and SHE LIVES. but ok now let's fix her
+
+## fixing what broke
+seems three main things needed to be changed before the instance could start:
+1. `job_conf.{x/y}ml` seems to be included in the `galaxyservers.yml` now instead of as a `files/template`, at least the way the GTN tutorial is structured. see about putting that in the `yml` or if i can keep using the xml...
+2. had to remove `s3` sources from `file_sources.yml`, which included all the AWS bucket sources with authentication required... see what the current way of doing that is
+3. weird tool XMLs causing issues. deleted them but maybe i can uninstall them from the admin panel to make sure galaxy knows they're gone...? i don't use `sift` and the `merqury` version mentioned is outdated. 
