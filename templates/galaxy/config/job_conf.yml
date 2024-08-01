@@ -20,7 +20,7 @@ execution:
       runner: slurm
       singularity_enabled: false
       native_specification: '--partition=vgl --nodes=1 --cpus-per-task=1'
-    bigmem_4cpu:
+    vgl_4cpu:
       runner: slurm
       singularity_enabled: false
       native_specification: '--partition=vgl --nodes=1 --cpus-per-task=4'
