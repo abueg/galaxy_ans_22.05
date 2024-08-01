@@ -43,12 +43,14 @@ execution:
       singularity_enabled: false
       native_specification: '--partition=vgl --nodes=1 --cpus-per-task=16'
       resubmit:
+      - condition: unknown_error
         environment: bigmem32
     retry2bigmem64:
       runner: slurm
       singularity_enabled: false
       native_specification: '--partition=vgl --nodes=1 --cpus-per-task=32'
       resubmit:
+      - condition: unknown_error
         environment: bigmem64
     singularity_local:
       runner: slurm
