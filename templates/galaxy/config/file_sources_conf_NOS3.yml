@@ -15,6 +15,15 @@
   timeout: 10
   port: 21
 
+- type: s3fs
+  label: Genome Ark EXPORT LOCATION
+  requires_groups: VGL
+  id: genomeark_galaxy
+  doc: export to genomeark here
+  bucket: genomeark
+  writable: true
+  secret: "{{ vault_genomeark_export_pwd }}"
+  key: "{{ vault_genomeark_export_id }}"
 
 - type: posix
   root: '/lustre/fs5/vgl/scratch/labueg/user_import_test/'
