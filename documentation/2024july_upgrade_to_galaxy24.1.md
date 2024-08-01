@@ -434,6 +434,23 @@ for (1): i will try to migrate the job_conf.xml to this format and put it in the
 - maybe i'll just treat the yml like the xml file previously, and have it in `templates`. worth trying to see if it gets rid of the handler error...
 - also updating to use a more recent version of the galaxy ansible role...
 - ok that's working AND gets rid of the handler error, let's stick with that! :white_check_mark:
+- the retry destinations are failing when i cancel them w/ `scancel` (which used to work to get them to resubmit to the new env):
+```
+galaxy.jobs.runners.drmaa DEBUG 2024-07-31 20:33:13,355 [pN:handler_0,p:16705,tN:SlurmRunner.monitor_thread] (111596/62055227) state change: job finished, but failed
+galaxy.jobs.runners.slurm DEBUG 2024-07-31 20:33:13,396 [pN:handler_0,p:16705,tN:SlurmRunner.monitor_thread] Checking /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/jobs/000/111/111596/galaxy_111596.e for exceeded memory message from SLURM
+galaxy.jobs.runners.slurm INFO 2024-07-31 20:33:13,398 [pN:handler_0,p:16705,tN:SlurmRunner.monitor_thread] (111596/62055227) Job was cancelled via SLURM (e.g. with scancel(1))
+galaxy.jobs.runners ERROR 2024-07-31 20:33:13,403 [pN:handler_0,p:16705,tN:SlurmRunner.work_thread-2] Caught exception in runner state handler
+Traceback (most recent call last):
+  File "/lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/server/lib/galaxy/jobs/runners/__init__.py", line 577, in _handle_runner_state
+    handler(self.app, self, job_state)
+  File "/lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/server/lib/galaxy/jobs/runners/state_handlers/resubmit.py", line 38, in failure
+    _handle_resubmit_definitions(resubmit_definitions, app, job_runner, job_state)
+  File "/lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/server/lib/galaxy/jobs/runners/state_handlers/resubmit.py", line 50, in _handle_resubmit_definitions
+    condition = resubmit.get("condition", None)
+AttributeError: 'str' object has no attribute 'get'
+```
+- will try with `condition: unknown`
+- ok that works! :white_check_mark:
 
 for (2): referring to the [usegalaxy ORG playbook, which uses a jinja template for `file_sources_conf.yml`](https://github.com/galaxyproject/usegalaxy-playbook/blob/main/env/common/templates/galaxy/config/file_sources_conf.yml.j2):
 
@@ -477,4 +494,8 @@ genomeark_galaxy_aws_access_key_id: "{{ vault_genomeark_galaxy_aws_access_key_id
 genomeark_vgl_aws_secret_access_key: "{{ vault_genomeark_vgl_aws_secret_access_key }}"
 genomeark_vgl_aws_access_key_id: "{{ vault_genomeark_vgl_aws_access_key_id }}"
 ```
+
 to edit the vault file: `ansible-vault edit group_vars/secret.yml`
+- added credentials to that file
+- ok i got it to work :white_check_mark: when the `file_sources_conf.yml` refers to the `vault_*` variable but it doesn't work when i try to have it like. passed through the variables in `galaxyservers.yml`
+
