@@ -10,6 +10,7 @@ handling:
 execution:
   default: vgl_default
   environments:
+## plain environments
     local_dest:
       runner: local_runner
     vgl_default:
@@ -24,17 +25,39 @@ execution:
       runner: slurm
       singularity_enabled: false
       native_specification: '--partition=vgl --nodes=1 --cpus-per-task=4'
+    vgl_16cpu:
+      runner: slurm
+      singularity_enabled: false
+      native_specification: '--partition=vgl --nodes=1 --cpus-per-task=16'
+    bigmem32:
+      runner: slurm
+      singularity_enabled: false
+      native_specification: '--partition=vgl_bigmem --nodes=1 --cpus-per-task=32'
+    bigmem64:
+      runner: slurm
+      singularity_enabled: false
+      native_specification: '--partition=vgl_bigmem --nodes=1 --cpus-per-task=64'
+## more funky environments
+    retry2bigmem32:
+      runner: slurm
+      singularity_enabled: false
+      native_specification: '--partition=vgl --nodes=1 --cpus-per-task=16'
+      resubmit:
+        environment: bigmem32
+    retry2bigmem64:
+      runner: slurm
+      singularity_enabled: false
+      native_specification: '--partition=vgl --nodes=1 --cpus-per-task=32'
+      resubmit:
+        environment: bigmem64
+    singularity_local:
+      runner: slurm
+      singularity_enabled: true
+      singularity_cmd: /usr/bin/apptainer
+      native_specification: '--partition=vgl --nodes=1 --cpus-per-task=32'
     dynamic_partition_cores:
       runner: dynamic
       function: dynamic_partition_cores
-    vgl:
-      runner: slurm
-      singularity_enabled: false
-      native_specification: '--partition=vgl'
-    bigmem:
-      runner: slurm
-      singularity_enabled: false
-      native_specification: '--partition=vgl_bigmem'
 resources:
   default: default
   groups:
@@ -43,5 +66,36 @@ resources:
 tools:
   - class: local # these special tools that aren't parameterized for remote execution - expression tools, upload, etc
     execution: local_dest
+  - id: meryl
+    environment: vgl_16cpu
+  - id: bwa_mem2
+    environment: retry2bigmem32
   - id: hifiasm
-    environment: vgl_4cpu
+    environment: retry2bigmem64
+  - id: purge_dups
+    environment: retry2bigmem64
+  - id: yahs
+    environment: retry2bigmem64
+  - id: bellerophon
+    environment: retry2bigmem64
+  - id: smudgeplot
+    environment: bigmem64
+## 1 cpu tools
+  - id: cat1
+    environment: vgl_1cpu
+  - id: compose_text_param
+    environment: vgl_1cpu
+  - id: compress_file
+    environment: vgl_1cpu
+  - id: genomescope
+    environment: vgl_1cpu
+  - id: tp_cat
+    environment: vgl_1cpu
+## local tools
+  - id: __DATA_FETCH__
+    environment: local
+  - id: upload1
+    environment: local
+## container tools
+  - id: mitohifi
+    environment: singularity_local
