@@ -1,8 +1,8 @@
 ## plan (whatever that means)
 
-1. back up PG database
-2. upgrade to v24
-3. fix whatever broke getting the upgrade to work
+1. back up PG database :white_check_mark:
+2. upgrade to v24 :white_check_mark:
+3. fix whatever broke getting the upgrade to work :white_check_mark:
 4. test workflows
 5. clean up jobs directory
 6. probably automate cleaning up the jobs directory lol
