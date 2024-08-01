@@ -27,12 +27,6 @@ execution:
     dynamic_partition_cores:
       runner: dynamic
       function: dynamic_partition_cores
-    bionano:
-      runner: slurm
-      singularity_enabled: false
-      native_specification: '--partition=vgl --nodes=1 --cpus-per-task=4'
-      env:
-        - file: '/lustre/fs5/vgl/store/vgl_galaxy/bionano/bionano_setup.sh'
     vgl:
       runner: slurm
       singularity_enabled: false
