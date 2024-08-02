@@ -8,7 +8,7 @@
 6. probably automate cleaning up the jobs directory lol
 7. rolling PG database backups 
 
-## backing up database
+## 1) backing up database
 ```
 [vgl_galaxy@vglgalaxy /lustre/fs5/vgl/scratch/vgl_galaxy]$ galaxyctlenv 
 (venv) [vgl_galaxy@vglgalaxy /lustre/fs5/vgl/scratch/vgl_galaxy]$ galaxyctl stop
@@ -19,7 +19,7 @@ cd $SCRATCH/pg_srvr_backups
 pg_dump galaxy | gzip > galaxy_database-20240724-1215.sql.gz
 ```
 
-## upgrading galaxy versions to 24.x
+## 2) upgrading galaxy version to 24.x
 going to target https://github.com/galaxyproject/galaxy/releases/tag/v24.0.2
 
 
@@ -422,7 +422,7 @@ ok that eliminates the `s3` error but now there are errors from tool XMLs buh...
 
 removed those and SHE LIVES. but ok now let's fix her
 
-## fixing what broke
+## 3) fixing what broke
 seems three main things needed to be changed before the instance could start:
 1. `job_conf.{x/y}ml` seems to be included in the `galaxyservers.yml` now instead of as a `files/template`, at least the way the GTN tutorial is structured. see about putting that in the `yml` or if i can keep using the xml...
 2. had to remove `s3` sources from `file_sources.yml`, which included all the AWS bucket sources with authentication required... see what the current way of doing that is
@@ -498,4 +498,129 @@ genomeark_vgl_aws_access_key_id: "{{ vault_genomeark_vgl_aws_access_key_id }}"
 to edit the vault file: `ansible-vault edit group_vars/secret.yml`
 - added credentials to that file
 - ok i got it to work :white_check_mark: when the `file_sources_conf.yml` refers to the `vault_*` variable but it doesn't work when i try to have it like. passed through the variables in `galaxyservers.yml`
+
+bonus surprise 4) updating the tools' conda & python thanks to björn:
+- tools' conda was version 4.6.14, so over two years old
+- ran `/lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/var/dependencies/_conda/condabin/conda update conda`
+- it updated to 22.9.0, still not latest
+- python version was 3.7.12, also not latest
+- at this point, trying `conda update` or `conda install python=3.10` were NOT working. throwing error: `module 'lib' has no attribute 'X509_V_FLAG_CB_ISSUER_CHECK'` having to do with `[...]/_conda/lib/python3.7/site-packages/OpenSSL/`
+- following this advice: https://github.com/conda/conda/issues/10405#issuecomment-786503274 i removed OpenSSL from site-packages
+- then this: ` . /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/var/dependencies/_conda/bin/activate && conda install python=3.10`
+- it looked like it worked but the end of log had this:
+```
+charset-normalizer-3 | 46 KB     | ############################################################################################################################################################################################################################################################################################################################### | 100%
+python-3.10.14       | 26.8 MB   | ############################################################################################################################################################################################################################################################################################################################### | 100%
+brotli-python-1.1.0  | 341 KB    | ############################################################################################################################################################################################################################################################################################################################### | 100%
+pycparser-2.22       | 103 KB    | ############################################################################################################################################################################################################################################################################################################################### | 100%
+libuuid-1.41.5       | 27 KB     | ############################################################################################################################################################################################################################################################################################################################### | 100%
+pycosat-0.6.6        | 85 KB     | ############################################################################################################################################################################################################################################################################################################################### | 100%
+conda-22.11.1        | 913 KB    | ############################################################################################################################################################################################################################################################################################################################### | 100%
+Preparing transaction: done
+Verifying transaction: done
+Executing transaction: done
+Retrieving notices: ...working... failed
+Traceback (most recent call last):
+  File "/lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/var/dependencies/_conda/lib/python3.7/site-packages/conda/exceptions.py", line 1129, in __call__
+  File "/lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/var/dependencies/_conda/lib/python3.7/site-packages/conda/cli/main.py", line 86, in main_subshell
+  File "/lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/var/dependencies/_conda/lib/python3.7/site-packages/conda/cli/conda_argparse.py", line 93, in do_call
+  File "/lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/var/dependencies/_conda/lib/python3.7/site-packages/conda/notices/core.py", line 78, in wrapper
+  File "/lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/var/dependencies/_conda/lib/python3.7/site-packages/conda/notices/core.py", line 39, in display_notices
+  File "/lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/var/dependencies/_conda/lib/python3.7/site-packages/conda/notices/http.py", line 42, in get_notice_responses
+  File "/lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/var/dependencies/_conda/lib/python3.7/site-packages/conda/notices/http.py", line 40, in <genexpr>
+  File "/lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/var/dependencies/_conda/lib/python3.7/concurrent/futures/_base.py", line 598, in result_iterator
+  File "/lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/var/dependencies/_conda/lib/python3.7/concurrent/futures/_base.py", line 435, in result
+  File "/lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/var/dependencies/_conda/lib/python3.7/concurrent/futures/_base.py", line 384, in __get_result
+  File "/lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/var/dependencies/_conda/lib/python3.7/concurrent/futures/thread.py", line 57, in run
+  File "/lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/var/dependencies/_conda/lib/python3.7/site-packages/conda/notices/http.py", line 42, in <lambda>
+  File "/lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/var/dependencies/_conda/lib/python3.7/site-packages/conda/notices/cache.py", line 37, in wrapper
+  File "/lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/var/dependencies/_conda/lib/python3.7/site-packages/conda/notices/http.py", line 58, in get_channel_notice_response
+  File "/lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/var/dependencies/_conda/lib/python3.7/site-packages/requests/sessions.py", line 546, in get
+  File "/lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/var/dependencies/_conda/lib/python3.7/site-packages/requests/sessions.py", line 533, in request
+  File "/lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/var/dependencies/_conda/lib/python3.7/site-packages/requests/sessions.py", line 646, in send
+  File "/lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/var/dependencies/_conda/lib/python3.7/site-packages/requests/adapters.py", line 416, in send
+  File "/lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/var/dependencies/_conda/lib/python3.7/site-packages/requests/adapters.py", line 228, in cert_verify
+OSError: Could not find a suitable TLS CA certificate bundle, invalid path: /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/var/dependencies/_conda/lib/python3.7/site-packages/certifi/cacert.pem
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/var/dependencies/_conda/bin/conda", line 13, in <module>
+    sys.exit(main())
+  File "/lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/var/dependencies/_conda/lib/python3.7/site-packages/conda/cli/main.py", line 129, in main
+  File "/lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/var/dependencies/_conda/lib/python3.7/site-packages/conda/exceptions.py", line 1429, in conda_exception_handler
+  File "/lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/var/dependencies/_conda/lib/python3.7/site-packages/conda/exceptions.py", line 1132, in __call__
+  File "/lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/var/dependencies/_conda/lib/python3.7/site-packages/conda/exceptions.py", line 1172, in handle_exception
+  File "/lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/var/dependencies/_conda/lib/python3.7/site-packages/conda/exceptions.py", line 1183, in handle_unexpected_exception
+  File "/lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/var/dependencies/_conda/lib/python3.7/site-packages/conda/exceptions.py", line 1245, in print_unexpected_error_report
+ModuleNotFoundError: No module named 'conda.cli.main_info'
+```
+... but:
+```
+ModuleNotFoundError: No module named 'conda.cli.main_info'
+(base) [vgl_galaxy@vglgalaxy ~]$ which python
+/lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/var/dependencies/_conda/bin/python
+(base) [vgl_galaxy@vglgalaxy ~]$ python --version
+Python 3.10.14
+```
+- so using python3.10 now, and carrying on past the certificate error since it was for python3.7
+- `conda update conda` worked after that
+
+galaxy now running python 3.10 and conda 24.7 :snake:
+
+## 5&6) cleaning job directory
+björn suggested either tmpreaper or tmpwatch, going to try out tmpwatch
+```
+[vgl_galaxy@vglgalaxy /lustre/fs5/vgl/store/vgl_galaxy]$ yum search tmpwatch
+Loaded plugins: product-id, search-disabled-repos, subscription-manager
+========================================================================================== N/S matched: tmpwatch ===========================================================================================
+tmpwatch.x86_64 : A utility for removing files based on when they were last accessed
+
+  Name and summary matches only, use "search all" for everything.
+[vgl_galaxy@vglgalaxy /lustre/fs5/vgl/store/vgl_galaxy]$ yumdownloader --destdir tmpwatch --resolve tmpwatch
+Loaded plugins: product-id, subscription-manager
+epel-local                                                                                                                                                                           | 3.6 kB  00:00:00
+lustre_client_repo                                                                                                                                                                   | 2.9 kB  00:00:00
+rhel78-provisioner                                                                                                                                                                   | 2.8 kB  00:00:00
+ruhpc-provisioner                                                                                                                                                                    | 2.9 kB  00:00:00
+--> Running transaction check
+---> Package tmpwatch.x86_64 0:2.11-6.el7 will be installed
+--> Finished Dependency Resolution
+tmpwatch-2.11-6.el7.x86_64.rpm                                                                                                                                                       |  39 kB  00:00:00
+[vgl_galaxy@vglgalaxy /lustre/fs5/vgl/store/vgl_galaxy]$ l tmpwatch/
+total 8.5K
+drwxr-xr-x  2 vgl_galaxy vgl 4.0K Aug  2 11:54 ./
+drwxr-xr-x 23 vgl_galaxy vgl 4.0K Aug  2 11:53 ../
+-rw-r--r--  1 vgl_galaxy vgl  40K Feb 18  2019 tmpwatch-2.11-6.el7.x86_64.rpm
+[vgl_galaxy@vglgalaxy /lustre/fs5/vgl/store/vgl_galaxy]$ mkdir tmpwatch_install
+[vgl_galaxy@vglgalaxy /lustre/fs5/vgl/store/vgl_galaxy]$ cd tmpwatch_install/ && rpm2cpio /lustre/fs5/vgl/store/vgl_galaxy/tmpwatch/tmpwatch-2.11-6.el7.x86_64.rpm | cpio -idv
+./usr/bin/tmpwatch
+./usr/sbin/tmpwatch
+./usr/share/doc/tmpwatch-2.11
+./usr/share/doc/tmpwatch-2.11/AUTHORS
+./usr/share/doc/tmpwatch-2.11/COPYING
+./usr/share/doc/tmpwatch-2.11/ChangeLog
+./usr/share/doc/tmpwatch-2.11/NEWS
+./usr/share/doc/tmpwatch-2.11/README
+./usr/share/man/man8/tmpwatch.8.gz
+119 blocks
+[vgl_galaxy@vglgalaxy /lustre/fs5/vgl/store/vgl_galaxy/tmpwatch_install]$ ./usr/bin/tmpwatch --help
+./usr/bin/tmpwatch: unrecognized option '--help'
+tmpwatch 2.11 - (C) 1997-2009 Red Hat, Inc. All rights reserved.
+This program may be freely redistributed under the terms of the
+GNU General Public License version 2.
+
+tmpwatch [-u|-m|-c] [-MUXadfqtvx] [--verbose] [--force] [--all] [--nodirs] [--nosymlinks] [--test] [--quiet] [--atime|--mtime|--ctime] [--dirmtime] [--exclude <path>] [--exclude-user <user>] [--exclude-pattern <pattern>] [--fuser] <hours-untouched> <dirs>
+[vgl_galaxy@vglgalaxy /lustre/fs5/vgl/store/vgl_galaxy/tmpwatch_install]$ ln -s $(pwd)/usr/bin/tmpwatch $STORE/bin/tmpwatch
+
+tmpwatch --atime --test 60d . 
+
+### using this one in $GALAXYJOBDIR, excluding the `000` dir where all the recent jobs (May '24 onward) were run
+tmpwatch --atime --verbose 90d . --exclude=/lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/jobs/000/
+
+### lots of verbose output
+[vgl_galaxy@vglgalaxy /lustre/fs5/vgl/scratch/vgl_galaxy/galaxy_srv/galaxy/jobs]$ du -sh .
+7.2T	.
+```
+clean! :broom:
 
