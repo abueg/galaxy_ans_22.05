@@ -3,7 +3,7 @@
 1. back up PG database :white_check_mark:
 2. upgrade to v24 :white_check_mark:
 3. fix whatever broke getting the upgrade to work :white_check_mark:
-4. test workflows 
+4. test workflows :white_check_mark:
 5. clean up jobs directory :white_check_mark:
 6. probably automate cleaning up the jobs directory lol
 7. rolling PG database backups 
@@ -568,6 +568,12 @@ Python 3.10.14
 - `conda update conda` worked after that
 
 galaxy now running python 3.10 and conda 24.7 :snake:
+
+## 4) testing dockstore workflows
+- initial import of workflows gives error about subworkflow versions
+- received YAML of all tool versions in the workflows from delphine
+- used ephemeris to install that (after the python/conda update), looked fine 
+- now testing workflows
 
 ## 5&6) cleaning job directory
 björn suggested either tmpreaper or tmpwatch, going to try out tmpwatch
