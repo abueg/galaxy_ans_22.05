@@ -11,7 +11,7 @@ execution:
   default: vgl_default
   environments:
 ## plain environments
-    local_dest:
+    local:
       runner: local_runner
     vgl_default:
       runner: slurm
