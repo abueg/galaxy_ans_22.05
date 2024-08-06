@@ -7,7 +7,7 @@
 5. clean up jobs directory :white_check_mark:
 6. probably automate cleaning up the jobs directory lol
 7. rolling PG database backups 
-8. update homepage
+8. update homepage :white_check_mark:
 
 ## 1) backing up database
 ```
