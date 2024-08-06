@@ -1,0 +1,97 @@
+<html>
+    <head>
+        <title>VGaLaxy</title>
+        <link rel="icon" type="image/x-icon" href="https://github.com/abueg/galaxy_ans_22.05/raw/master/files/assets/favicon.ico">
+        <style>
+            .division1 {
+                width: 1000px;
+                font-family: "Verdana", sans-serif;
+                text-align: center;
+<<<<<<< HEAD
+=======
+                position: absolute;
+>>>>>>> 16bdf4e0372eba6c8c559c95d591df38e83d032a
+                left: 50% ;
+            }
+            .division2 {
+                font-family: "Verdana", sans-serif;
+                text-align: right;
+                vertical-align: bottom;
+                font-size: small;
+            }
+            th, td {
+                padding: 15px;
+            }
+        </style>
+    </head>
+    <body>
+<<<<<<< HEAD
+        <div class="division1">
+            <h1>Welcome to the VGL Galaxy instance!<br>🐆🦒🐷🦏🦄🐯</h1>
+            <br>
+            <h2>Assembly workflows can be found in <a href="https://dockstore.org/organizations/iwc/collections/vgp" target="_blank" rel="noopener noreferrer">this collection on DockStore.</a></h2>
+            <br>
+            The <a href="https://www.vertebrategenomelab.org/">Vertebrate Genome Lab (VGL)</a> focuses on generating high-quality reference genomes for a variety of Earth's biodiversity, as part of the larger <a href="https://www.earthbiogenome.org/" target="_blank" rel="noopener noreferrer">Earth Biogenome Project</a>. Check out <a href="https://www.nature.com/articles/s41587-023-02100-3">our paper</a> for more information about the pipeline!
+            <br><br>
+            There are two tutorials available for learning how to use the VGP pipeline:
+            <br>
+            <table>
+                <tr>
+                    <th>Tutorial</th>
+                    <th>Information</th>
+                </tr>
+                <tr>
+                    <td><a href="https://training.galaxyproject.org/training-material//topics/assembly/tutorials/vgp_genome_assembly/tutorial.html">Long tutorial</a></td>
+                    <td>The longform, step-by-step tutorial with explanations of assembly concepts and ideas, including rationales for various parameters. <b>If you are new to genome assembly</b>, check this one out first and follow along with test data!</td>
+                </tr>
+                <tr>
+                    <td><a href="https://training.galaxyproject.org/training-material/topics/assembly/tutorials/vgp_workflow_training/tutorial.html">Short tutorial</a></td>
+                    <td>The shorter tutorial meant to show how to run our workflows. <b>If you already have data in-hand</b> and are ready to run our workflows (<i>i.e.</i>, NOT running the pipeline step-by-step), then check this one out!</td>
+                </tr>
+            </table>
+            <br><br><br><br><br>
+	    Here is a video tutorial for importing workflows from the above link and running them:
+            <iframe src="https://drive.google.com/file/d/1_qF1VjYMDfT3pYh4MX8MZYKADN_R7M0t/preview" width="640" allow="autoplay muted"></iframe>
+	    <br><br><br>
+            Please contact <i>vgl [at] rockefeller [dot] edu</i> if you have any questions about this instance.
+            <br><br><br><br><br>
+        </div>
+=======
+        <center>
+            <div class="division1">
+                <h1>Welcome to the VGL Galaxy instance!<br>🐆🦒🐷🦏🦄🐯</h1>
+                <br>
+                <h2>Assembly workflows can be found in <a href="https://dockstore.org/organizations/iwc/collections/vgp" target="_blank" rel="noopener noreferrer">this collection on DockStore.</a></h2>
+                <br>
+                The <a href="https://www.vertebrategenomelab.org/">Vertebrate Genome Lab (VGL)</a> focuses on generating high-quality reference genomes for a variety of Earth's biodiversity, as part of the larger <a href="https://www.earthbiogenome.org/" target="_blank" rel="noopener noreferrer">Earth Biogenome Project</a>. Check out <a href="https://www.nature.com/articles/s41587-023-02100-3">our paper</a> for more information about the pipeline!
+                <br><br>
+                There are two tutorials available for learning how to use the VGP pipeline:
+                <br>
+                <table>
+                    <tr>
+                        <th>Tutorial</th>
+                        <th>Information</th>
+                    </tr>
+                    <tr>
+                        <td><a href="https://training.galaxyproject.org/training-material//topics/assembly/tutorials/vgp_genome_assembly/tutorial.html">Long tutorial</a></td>
+                        <td>The longform, step-by-step tutorial with explanations of assembly concepts and ideas, including rationales for various parameters. <b>If you are new to genome assembly</b>, check this one out first and follow along with test data!</td>
+                    </tr>
+                    <tr>
+                        <td><a href="https://training.galaxyproject.org/training-material/topics/assembly/tutorials/vgp_workflow_training/tutorial.html">Short tutorial</a></td>
+                        <td>The shorter tutorial meant to show how to run our workflows. <b>If you already have data in-hand</b> and are ready to run our workflows (<i>i.e.</i>, NOT running the pipeline step-by-step), then check this one out!</td>
+                    </tr>
+                </table>
+                <br><br><br><br><br>
+                Please contact <i>vgl [at] rockefeller [dot] edu</i> if you have any questions about this instance.
+                <br><br><br><br><br>
+            </div>
+        </center>
+>>>>>>> 16bdf4e0372eba6c8c559c95d591df38e83d032a
+        <div class="division2">
+            <i>Canis lupus familiaris</i> is represented through several honorary members of the VGL: L to R, Angel, Poppy, and Fitz.
+            <br>
+            <img src="https://raw.githubusercontent.com/abueg/galaxy_ans_22.05/master/files/assets/angel.png" alt="angel" height="200"> <img src="https://raw.githubusercontent.com/abueg/galaxy_ans_22.05/master/files/assets/poppy.png" alt="poppy" height="200"> <img src="https://raw.githubusercontent.com/abueg/galaxy_ans_22.05/master/files/assets/fitz.png" alt="fitz" height="200">
+        </div>
+        <iframe src="https://galaxyproject.org/#" width="100%" height="500px" />
+    </body>
+</html>
