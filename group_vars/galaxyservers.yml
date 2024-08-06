@@ -135,6 +135,7 @@ galaxy_config:
     allow_user_impersonation: true
     # tool security
     outputs_to_working_directory: true
+    enable_notification_system: true
   gravity:
     galaxy_root: "{{ galaxy_root }}/server"
     app_server: gunicorn
