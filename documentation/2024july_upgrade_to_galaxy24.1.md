@@ -631,3 +631,5 @@ tmpwatch --atime --verbose 90d . --exclude=/lustre/fs5/vgl/scratch/vgl_galaxy/ga
 ```
 clean! :broom:
 
+edit 08aug2024: ok i will re-run the tmpwatch command during a slow period and with the actual `-a` flag to get rid of directories lol
+
