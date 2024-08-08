@@ -101,3 +101,5 @@ tools:
 ## container tools
   - id: mitohifi
     environment: singularity_local
+  - id: bionano_scaffold
+    environment: singularity_local
